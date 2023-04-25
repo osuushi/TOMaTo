@@ -5,7 +5,10 @@ export function init(): void {
 }
 
 function start(): void {
+  document.querySelector('#settings')!.addEventListener('click', onSettingsClick)
+}
 
+function onSettingsClick(): void {
 }
 
 init()
