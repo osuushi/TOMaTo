@@ -1,8 +1,37 @@
 body {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Open Sans', sans-serif;
   color: #186700;
   background-color: #dbe4d8;
+  padding: 0;
+  margin: 0;
+}
+
+#nav {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+  height: 100vh;
+  background-color: #eeffe8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#nav button {
+  border: none;
+  background: none;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+}
+
+#nav button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#nav button:active {
+  background-color: rgba(0, 0, 0, 0.2);
 }
