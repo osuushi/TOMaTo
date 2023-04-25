@@ -69,3 +69,7 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+ipcMain.on("hide", () => {
+  app.hide()
+})
