@@ -12,6 +12,7 @@ function createWindow(): void {
     width: 900,
     height: 670,
     show: false,
+    closable: process.platform !== 'darwin',
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
@@ -67,7 +68,6 @@ app.whenReady().then(() => {
     // Unminimize the window if it is minimized
     BrowserWindow.getFocusedWindow()?.restore()
   })
-
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -88,3 +88,8 @@ ipcMain.on("hide", () => {
     BrowserWindow.getFocusedWindow()?.minimize()
   }
 })
+
+app.on('before-quit', () => {
+  // Quit the application
+  app.exit()
+});
