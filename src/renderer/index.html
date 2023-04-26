@@ -14,14 +14,22 @@
 <body>
   <!-- Flexbox with small nav on the left and main content on the right -->
   <div id="nav">
-    <button id="nav-main">▶️</button>
+    <button id="nav-search" class="active">▶️</button>
     <button id="nav-settings">⚙️</button>
   </div>
   <div id="content">
-    <div class="mainview active">
+    <div class="main-view search-view active">
       <!-- Search bar -->
       <div id="search">
-        🔍<input type="text" id="search-input" placeholder="Search..." />
+        <div>🔍</div><input type="text" id="search-input" placeholder="Search..." />
+      </div>
+    </div>
+    <div class="main-view settings-view">
+      <h1>Settings:</h1>
+      <div><label for="openai-key">
+          OpenAI API Key:
+        </label>
+        <input type="password" id="openai-key" placeholder="OpenAI API Key" />
       </div>
     </div>
     <script type="module" src="./src/renderer.ts"></script>

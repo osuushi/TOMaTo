@@ -1,15 +1,16 @@
+import { setupNav } from "./nav"
+import { renderSearch } from "./search"
+
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {
     start()
-    bindKeys()
   })
 }
 
 function start(): void {
-  document.querySelector('#settings')!.addEventListener('click', onSettingsClick)
-}
-
-function onSettingsClick(): void {
+  bindKeys()
+  setupNav()
+  renderSearch()
 }
 
 function bindKeys() {

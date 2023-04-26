@@ -28,12 +28,16 @@ body {
   font-size: 18px;
 }
 
-#nav button:hover {
+#nav button.active {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-#nav button:active {
+#nav button:hover {
   background-color: rgba(0, 0, 0, 0.2);
+}
+
+#nav button:active {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 
 .main-view {
@@ -47,4 +51,25 @@ body {
 
 .main-view:not(.active) {
   display: none;
+}
+
+#search {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  font-size: 30px;
+}
+
+#search input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-bottom: 1px solid #186700;
+  font-size: 18px;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.settings-view {
+  padding: 10px;
 }
