@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.osuushi.tomato
 productName: tomato
 directories:
   buildResources: build

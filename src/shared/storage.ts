@@ -1,4 +1,4 @@
-// Schema for a shortcut
+// Schema for a settings
 
 import { Schema } from "electron-store"
 
@@ -7,7 +7,7 @@ export const schema: Schema<any> = {
     type: 'string',
     default: '',
   },
-  shortcuts: {
+  chitchats: {
     type: "array",
     items: {
       type: "object",
@@ -30,9 +30,9 @@ export const schema: Schema<any> = {
   }
 }
 
-// Types for shortcuts
+// Types for chitchats
 export type ModelName = "gpt-3.5-turbo" | "gpt-4"
-export interface Shortcut {
+export interface Chitchat {
   fullName: string
   mnemonic: string
   description: string
