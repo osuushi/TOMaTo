@@ -34,7 +34,7 @@ class ChitchatWrapper {
     const fullName = htmlEscape(this.chitchat.fullName);
     const description = htmlEscape(this.chitchat.description);
     return `
-      <div class="chitchat-editor" data-uuid="${this.chitchat.uuid}>
+      <div class="chitchat-editor" data-uuid="${this.chitchat.uuid}">
         <div>
           <label for="chitchat-mnemonic">Mnemonic</label>
           <input type="text" id="chitchat-mnemonic" value="${mnemonic}">
@@ -63,15 +63,22 @@ class ChitchatWrapper {
 
   makeWidgetElement(): HTMLDivElement {
     const element = this.makeElement(this.renderWidget());
-    element.querySelector(".chitchat-edit")!.addEventListener("click", () => {
-      this.edit();
-    });
+
     element.querySelector(".chitchat-duplicate")!.addEventListener("click", () => {
       this.duplicate();
     });
-    element.querySelector(".chitchat-delete")!.addEventListener("click", () => {
-      this.delete();
-    });
+
+    if (isBuiltIn(this.chitchat)) {
+      element.querySelector(".chitchat-delete")!.remove();
+      element.querySelector(".chitchat-edit")!.remove();
+    } else {
+      element.querySelector(".chitchat-delete")!.addEventListener("click", () => {
+        this.delete();
+      });
+      element.querySelector(".chitchat-edit")!.addEventListener("click", () => {
+        this.edit();
+      });
+    }
     return element;
   }
 
@@ -79,6 +86,9 @@ class ChitchatWrapper {
     const element = this.makeElement(this.renderEditor());
     element.querySelector(".chitchat-save")!.addEventListener("click", () => {
       this.save(element);
+    });
+    element.querySelector(".chitchat-cancel")!.addEventListener("click", () => {
+      element.remove();
     });
     return element
   }
@@ -165,4 +175,8 @@ export function wrapChitChats(chitchats: Chitchat[]): ChitchatWrapper[] {
 
 function escapeRegExp(char: string): string {
   return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function isBuiltIn(chitchat: Chitchat): boolean {
+  return builtins.some(builtin => builtin.uuid === chitchat.uuid);
 }
