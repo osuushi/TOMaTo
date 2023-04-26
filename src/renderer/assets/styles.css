@@ -73,3 +73,7 @@ body {
 .settings-view {
   padding: 10px;
 }
+
+#content {
+  width: 100%;
+}
