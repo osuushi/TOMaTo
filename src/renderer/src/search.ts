@@ -9,6 +9,8 @@ export function setupSearch() {
   document.querySelector("#search-input")!.addEventListener("input", () => {
     renderSearch();
   })
+
+  renderSearch();
 }
 
 export function renderSearch() {
