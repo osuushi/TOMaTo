@@ -1,13 +1,29 @@
 import { filteredChitChats, wrapChitChats } from "../chitchat";
 import { onGlobalEvent } from "../globalEvents";
+import { executeChitChat } from "./chat";
 
 export function setupSearch() {
   onGlobalEvent("chitchats-updated", () => {
     renderSearch();
   })
 
-  document.querySelector("#search-input")!.addEventListener("input", () => {
+  const searchInput = document.querySelector("#search-input")!;
+  searchInput.addEventListener("input", () => {
     renderSearch();
+  })
+  searchInput.addEventListener("keydown", (e) => {
+    const keydownEvent = e as KeyboardEvent;
+    if (keydownEvent.key === "Enter") {
+      const currentChitChat = filteredChitChats(getQuery())[0];
+      if (!currentChitChat) {
+        return;
+      }
+      executeChitChat(currentChitChat, getSubQuery()).then((result) => {
+        alert(result);
+      }, (error) => {
+        alert(error);
+      })
+    }
   })
 
   renderSearch();
@@ -30,4 +46,11 @@ export function renderSearch() {
 
 function getQuery(): string {
   return (document.querySelector("#search-input") as HTMLInputElement).value;
+}
+
+function getSubQuery(): string {
+  const query = getQuery();
+  const words = query.split(" ");
+  words.shift();
+  return words.join(" ");
 }

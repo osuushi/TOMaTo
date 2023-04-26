@@ -7,7 +7,7 @@ const builtins: Chitchat[] = [{
   description: "A loose thesaurus that finds similar words and phrases",
   model: "gpt-3.5-turbo",
   promptChain: [
-    "Produce a bulleted list with words or phrases that are similar to the word %s. Do not include any other text"
+    "Produce a bulleted list with words or phrases that are similar to %s. Do not include any other text"
   ],
 },
 {
