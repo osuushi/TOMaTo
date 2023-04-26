@@ -12,6 +12,7 @@ export const schema: Schema<any> = {
     items: {
       type: "object",
       properties: {
+        uuid: { type: "string" },
         fullName: { type: "string" },
         mnemonic: { type: "string" },
         description: { type: "string" },
@@ -33,6 +34,7 @@ export const schema: Schema<any> = {
 // Types for chitchats
 export type ModelName = "gpt-3.5-turbo" | "gpt-4"
 export interface Chitchat {
+  uuid: string
   fullName: string
   mnemonic: string
   description: string

@@ -1,4 +1,5 @@
 body {
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', 'Oxygen',
@@ -7,6 +8,7 @@ body {
   background-color: #dbe4d8;
   padding: 0;
   margin: 0;
+  height: 100vh;
 }
 
 #nav {
@@ -54,7 +56,14 @@ body {
 }
 
 #search {
+  position: relative;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#search-bar {
   display: flex;
   flex-direction: row;
   font-size: 30px;
@@ -76,4 +85,38 @@ body {
 
 #content {
   width: 100%;
+  height: 100%;
+}
+
+#search-results {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chitchat {
+  padding: 8px;
+  position: relative;
+  border-bottom: 1px solid #186700;
+}
+
+.chitchat .mnemonic {
+  font-weight: bold;
+}
+
+.chitchat-description {
+  padding: 5px 0 8px;
+  font-size: 12px;
+}
+
+.chitchat button {
+  border: none;
+  background: none;
+}
+
+.chitchat:first-child {
+  background-color: #a5e1d3;
 }

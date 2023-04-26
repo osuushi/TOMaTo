@@ -1,5 +1,5 @@
 import { setupNav } from "./nav"
-import { renderSearch } from "./search"
+import { setupSearch } from "./search"
 
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -10,7 +10,7 @@ export function init(): void {
 function start(): void {
   bindKeys()
   setupNav()
-  renderSearch()
+  setupSearch()
 }
 
 function bindKeys() {
