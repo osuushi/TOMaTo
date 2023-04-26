@@ -37,6 +37,11 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  // When the app comes to the foreground, send it to the renderer process
+  app.on('browser-window-focus', () => {
+    mainWindow.webContents.send('activate')
+  })
 }
 
 // This method will be called when Electron has finished
@@ -71,6 +76,7 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
 
 ipcMain.on("hide", () => {
   app.hide()

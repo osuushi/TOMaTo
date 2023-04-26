@@ -25,4 +25,13 @@ function bindKeys() {
   })
 }
 
+// Listen for activate messages from the background process
+window.electron.ipcRenderer.on('activate', () => {
+  // Focus the search input if it's there
+  const searchInput = document.querySelector('#search-input') as HTMLInputElement
+  if (searchInput) {
+    searchInput.focus()
+  }
+})
+
 init()
