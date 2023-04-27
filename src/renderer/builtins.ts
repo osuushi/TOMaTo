@@ -1,7 +1,8 @@
 import { Chitchat } from "../shared/storage";
 
-const builtins: Chitchat[] = [{
-  uuid: crypto.randomUUID(),
+type ChitchatWithoutUuid = Omit<Chitchat, "uuid">;
+
+const builtinsWithoutUuids: ChitchatWithoutUuid[] = [{
   mnemonic: "th",
   fullName: "Thesaurus",
   description: "A loose thesaurus that finds similar words and phrases",
@@ -11,7 +12,6 @@ const builtins: Chitchat[] = [{
   ],
 },
 {
-  uuid: crypto.randomUUID(),
   mnemonic: "rd",
   fullName: "Reverse Dictionary",
   description: "Look up a word by its definition and/or connotations",
@@ -21,7 +21,6 @@ const builtins: Chitchat[] = [{
   ]
 },
 {
-  uuid: crypto.randomUUID(),
   mnemonic: "emod",
   fullName: "Emotions Dictionary",
   description: "Find behaviors associated with a particular emotion",
@@ -31,7 +30,6 @@ const builtins: Chitchat[] = [{
   ]
 },
 {
-  uuid: crypto.randomUUID(),
   mnemonic: "haiku",
   fullName: "Haiku",
   description: "Write a haiku about a topic",
@@ -42,5 +40,12 @@ const builtins: Chitchat[] = [{
   ]
 }
 ];
+
+const builtins: Chitchat[] = builtinsWithoutUuids.map((chitchat) => {
+  return {
+    ...chitchat,
+    uuid: crypto.randomUUID(),
+  }
+});
 
 export default builtins;

@@ -1,5 +1,5 @@
 import { setupNav } from "./nav"
-import { setupSearch } from "./search"
+import { initOutputResizer, renderSearch, setupSearch } from "./search"
 
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -11,14 +11,35 @@ function start(): void {
   bindKeys()
   setupNav()
   setupSearch()
+  initOutputResizer()
 }
 
 function bindKeys() {
-  // On escape key, send hide event
+  // On escape key, hide according to the current state
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       e.preventDefault()
       e.stopPropagation()
+      // If there's an output, hide it and the screen
+      const outputScreen = document.querySelector('.output-screen')
+      if (outputScreen) {
+        outputScreen.remove()
+        const output = document.querySelector('.output')
+        if (output) {
+          output.remove()
+        }
+        return
+      }
+
+      // If there's text in the search input, clear it
+      const searchInput = document.querySelector('#search-input') as HTMLInputElement
+      if (searchInput.value) {
+        searchInput.value = ''
+        searchInput.focus();
+        renderSearch();
+        return
+      }
+
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send('hide')
     }

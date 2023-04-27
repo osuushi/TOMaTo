@@ -19,7 +19,14 @@ export function setupSearch() {
         return;
       }
       executeChitChat(currentChitChat, getSubQuery()).then((result) => {
-        alert(result);
+        const outputScreen = document.createElement("div");
+        outputScreen.classList.add("output-screen");
+        document.body.appendChild(outputScreen);
+        const outputBox = document.createElement("div");
+        outputBox.classList.add("output");
+        outputBox.textContent = result;
+        document.body.appendChild(outputBox);
+        positionOutput();
       }, (error) => {
         alert(error);
       })
@@ -53,4 +60,28 @@ function getSubQuery(): string {
   const words = query.split(" ");
   words.shift();
   return words.join(" ");
+}
+
+function positionOutput() {
+  const outputBox = document.querySelector(".output") as HTMLDivElement | undefined;
+  if (!outputBox) {
+    return;
+  }
+
+  // Center the absolutely positioned output box in the window
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+  const outputWidth = outputBox.offsetWidth;
+  const outputHeight = outputBox.offsetHeight;
+  outputBox.style.left = `${(windowWidth - outputWidth) / 2}px`;
+  outputBox.style.top = `${(windowHeight - outputHeight) / 2}px`;
+}
+
+export function initOutputResizer() {
+  // Animation frame loop to resize output box
+  function resizeOutput() {
+    positionOutput();
+    requestAnimationFrame(resizeOutput);
+  }
+  requestAnimationFrame(resizeOutput);
 }
