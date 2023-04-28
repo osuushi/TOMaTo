@@ -1,4 +1,4 @@
-import { Chitchat } from "../shared/storage";
+import { Chitchat, ModelName } from "../shared/storage";
 import htmlEscape from "html-escape";
 import builtins from "./builtins";
 import { triggerGlobalEvent } from "./globalEvents";
@@ -32,6 +32,7 @@ class ChitchatWrapper {
 
   renderEditor() {
     const mnemonic = htmlEscape(this.chitchat.mnemonic);
+    const model = htmlEscape(this.chitchat.model);
     const fullName = htmlEscape(this.chitchat.fullName);
     const description = htmlEscape(this.chitchat.description);
     const prompts = htmlEscape(stringifyPrompts(this.chitchat.promptChain));
@@ -49,6 +50,12 @@ class ChitchatWrapper {
           <label for="chitchat-description">Description</label>
           <input type="text" id="chitchat-description" value="${description}">
         </div>
+        <div>
+          <label for="chitchat-model">Model</label>
+          <select id="chitchat-model">
+            <option value="gpt-3.5-turbo" ${model === "gpt-3.5-turbo" ? "selected" : ""}>GPT-3.5 Turbo</option>
+            <option value="gpt-4" ${model === "gpt-4" ? "selected" : ""}>GPT-4</option>
+          </select>
         <div>
           <label for="chitchat-prompts">Prompts</label>
           <p>Use %s to indicate where the input should go. You can use it more than once.</p>
@@ -101,21 +108,22 @@ class ChitchatWrapper {
   }
 
   save(element: HTMLDivElement) {
-    const all = allChitChats();
-    let index = all.findIndex(chitchat => chitchat.uuid === this.chitchat.uuid);
+    const customs = customChitchats();
+    let index = customs.findIndex(chitchat => chitchat.uuid === this.chitchat.uuid);
     const newChitchat = {
       ...this.chitchat,
+      model: (element.querySelector("#chitchat-model") as HTMLSelectElement).value as ModelName,
       mnemonic: (element.querySelector("#chitchat-mnemonic") as HTMLInputElement).value,
       fullName: (element.querySelector("#chitchat-full-name") as HTMLInputElement).value,
       description: (element.querySelector("#chitchat-description") as HTMLInputElement).value,
       promptChain: parseChitchatPrompts((element.querySelector("#chitchat-prompts") as HTMLTextAreaElement).value),
     }
     if (index === -1) {
-      index = all.length;
+      index = customs.length;
     }
 
-    all[index] = newChitchat;
-    window.storeSet("chitchats", all);
+    customs[index] = newChitchat;
+    window.storeSet("chitchats", customs);
     triggerGlobalEvent("chitchats-updated");
     element.remove();
   }
@@ -145,11 +153,15 @@ class ChitchatWrapper {
   }
 }
 
+
 export function allChitChats(): Chitchat[] {
-  const builtinChitChats = builtins
-  const customChitChats: Chitchat[] = window.storeGet("chitchats") || [];
-  customChitChats.reverse(); // this shows last created first
-  return [...builtinChitChats, ...customChitChats]
+  const customs: Chitchat[] = customChitchats();
+  customs.reverse(); // this shows last created first
+  return [...builtins, ...customs]
+}
+
+function customChitchats(): Chitchat[] {
+  return window.storeGet("chitchats") || [];
 }
 
 export function filteredChitChats(filterText: string): Chitchat[] {
