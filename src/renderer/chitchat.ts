@@ -2,6 +2,7 @@ import { Chitchat } from "../shared/storage";
 import htmlEscape from "html-escape";
 import builtins from "./builtins";
 import { triggerGlobalEvent } from "./globalEvents";
+import { parseChitchatPrompts, stringifyPrompts } from "./custom_chitchat";
 
 class ChitchatWrapper {
   chitchat: Chitchat;
@@ -33,6 +34,7 @@ class ChitchatWrapper {
     const mnemonic = htmlEscape(this.chitchat.mnemonic);
     const fullName = htmlEscape(this.chitchat.fullName);
     const description = htmlEscape(this.chitchat.description);
+    const prompts = htmlEscape(stringifyPrompts(this.chitchat.promptChain));
     return `
       <div class="chitchat-editor" data-uuid="${this.chitchat.uuid}">
         <div>
@@ -45,8 +47,13 @@ class ChitchatWrapper {
         </div>
         <div>
           <label for="chitchat-description">Description</label>
-          <textarea id="chitchat-description">${description}</textarea>
+          <input type="text" id="chitchat-description" value="${description}">
         </div>
+        <div>
+          <label for="chitchat-prompts">Prompts</label>
+          <p>Use %s to indicate where the input should go. You can use it more than once.</p>
+          <p>Separate prompts with @@@ on its own line to form a chain</p>
+          <textarea id="chitchat-prompts">${prompts}</textarea>
         <div>
           <button class="chitchat-save">Save</button>
           <button class="chitchat-cancel">Cancel</button>
@@ -101,6 +108,7 @@ class ChitchatWrapper {
       mnemonic: (element.querySelector("#chitchat-mnemonic") as HTMLInputElement).value,
       fullName: (element.querySelector("#chitchat-full-name") as HTMLInputElement).value,
       description: (element.querySelector("#chitchat-description") as HTMLInputElement).value,
+      promptChain: parseChitchatPrompts((element.querySelector("#chitchat-prompts") as HTMLTextAreaElement).value),
     }
     if (index === -1) {
       index = all.length;

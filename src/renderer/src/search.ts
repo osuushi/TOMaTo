@@ -18,6 +18,12 @@ export function setupSearch() {
       if (!currentChitChat) {
         return;
       }
+
+      // If there's no subquery, do nothing
+      if (!getSubQuery()) {
+        return;
+      }
+
       searchInput.blur();
       // Create the loading overlay
       const loadingOverlay = document.createElement("div");
