@@ -7,7 +7,7 @@ export function setupSearch() {
     renderSearch();
   })
 
-  const searchInput = document.querySelector("#search-input")!;
+  const searchInput = document.querySelector("#search-input")! as HTMLInputElement;
   searchInput.addEventListener("input", () => {
     renderSearch();
   })
@@ -18,7 +18,14 @@ export function setupSearch() {
       if (!currentChitChat) {
         return;
       }
+      searchInput.blur();
+      // Create the loading overlay
+      const loadingOverlay = document.createElement("div");
+      loadingOverlay.classList.add("loading-overlay");
+      document.body.appendChild(loadingOverlay);
+
       executeChitChat(currentChitChat, getSubQuery()).then((result) => {
+        loadingOverlay.remove();
         const outputScreen = document.createElement("div");
         outputScreen.classList.add("output-screen");
         document.body.appendChild(outputScreen);
@@ -28,6 +35,7 @@ export function setupSearch() {
         document.body.appendChild(outputBox);
         positionOutput();
       }, (error) => {
+        loadingOverlay.remove();
         alert(error);
       })
     }

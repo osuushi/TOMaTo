@@ -17,22 +17,28 @@ function start(): void {
 function bindKeys() {
   // On escape key, hide according to the current state
   document.addEventListener('keydown', (e) => {
+    const searchInput = document.querySelector('#search-input') as HTMLInputElement
+    const outputScreen = document.querySelector('.output-screen')
+    const hideOutput = () => {
+      outputScreen?.remove()
+      const output = document.querySelector('.output')
+      if (output) {
+        output.remove()
+      }
+      searchInput.focus();
+    }
+
+
     if (e.key === 'Escape') {
       e.preventDefault()
       e.stopPropagation()
       // If there's an output, hide it and the screen
-      const outputScreen = document.querySelector('.output-screen')
       if (outputScreen) {
-        outputScreen.remove()
-        const output = document.querySelector('.output')
-        if (output) {
-          output.remove()
-        }
+        hideOutput()
         return
       }
 
       // If there's text in the search input, clear it
-      const searchInput = document.querySelector('#search-input') as HTMLInputElement
       if (searchInput.value) {
         searchInput.value = ''
         searchInput.focus();
@@ -42,6 +48,12 @@ function bindKeys() {
 
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send('hide')
+    } else if (e.key == "Enter") {
+      if (outputScreen) {
+        hideOutput()
+        searchInput.focus();
+        return
+      }
     }
   })
 }

@@ -144,3 +144,29 @@ body {
   height: 100vh;
   background: rgba(0, 0, 0, 0.2);
 }
+
+/* The .loading-overlay class is a full screen overlay that animates a gradient
+cycling over the entire window */
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  mix-blend-mode: screen;
+  background: linear-gradient(90deg, rgba(255, 196, 0, 1), rgba(0, 0, 0, 1), rgba(255, 196, 0, 1));
+  background-repeat: repeat-x;
+  /* Smooth animation as defined below */
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 100vw 0;
+  }
+}
