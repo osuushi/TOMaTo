@@ -19,6 +19,7 @@ function bindKeys() {
   document.addEventListener('keydown', (e) => {
     const searchInput = document.querySelector('#search-input') as HTMLInputElement
     const outputScreen = document.querySelector('.output-screen')
+    const editor = document.querySelector('.chitchat-editor')
     const hideOutput = () => {
       outputScreen?.remove()
       const output = document.querySelector('.output')
@@ -28,13 +29,17 @@ function bindKeys() {
       searchInput.focus();
     }
 
-
     if (e.key === 'Escape') {
       e.preventDefault()
       e.stopPropagation()
       // If there's an output, hide it and the screen
       if (outputScreen) {
         hideOutput()
+        return
+      }
+
+      if (editor) {
+        editor.remove();
         return
       }
 

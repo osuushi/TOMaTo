@@ -147,9 +147,9 @@ class ChitchatWrapper {
   }
 
   delete() {
-    let all = allChitChats();
-    all = all.filter(chitchat => chitchat.uuid !== this.chitchat.uuid);
-    window.storeSet("chitchats", all);
+    let customs = customChitchats();
+    customs = customs.filter(chitchat => chitchat.uuid !== this.chitchat.uuid);
+    window.storeSet("chitchats", customs);
     triggerGlobalEvent("chitchats-updated");
   }
 }
