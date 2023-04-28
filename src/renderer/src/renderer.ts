@@ -1,5 +1,5 @@
 import { setupNav } from "./nav"
-import { initOutputResizer, renderSearch, setupSearch } from "./search"
+import { initEnforcerLoop, renderSearch, setupSearch } from "./search"
 
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +11,7 @@ function start(): void {
   bindKeys()
   setupNav()
   setupSearch()
-  initOutputResizer()
+  initEnforcerLoop()
 }
 
 function bindKeys() {

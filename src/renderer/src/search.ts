@@ -91,11 +91,21 @@ function positionOutput() {
   outputBox.style.top = `${(windowHeight - outputHeight) / 2}px`;
 }
 
-export function initOutputResizer() {
+export function initEnforcerLoop() {
   // Animation frame loop to resize output box
-  function resizeOutput() {
+  function loop() {
     positionOutput();
-    requestAnimationFrame(resizeOutput);
+    // If we're on the search screen and there's no output, or editor, focus the search input
+    const searchInput = document.querySelector("#search-input") as HTMLInputElement;
+    const outputScreen = document.querySelector(".output-screen");
+    const editor = document.querySelector(".chitchat-editor");
+    if (document.querySelector(".search-view.active") && !outputScreen && !editor) {
+      searchInput.focus();
+    } else {
+      // Otherwise make sure the search input is not focused
+      searchInput.blur();
+    }
+    requestAnimationFrame(loop);
   }
-  requestAnimationFrame(resizeOutput);
+  requestAnimationFrame(loop);
 }
