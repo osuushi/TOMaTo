@@ -170,3 +170,41 @@ cycling over the entire window */
     background-position: 100vw 0;
   }
 }
+
+.chitchat-editor {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background: #FAFAFA;
+  padding: 10px;
+  width: 500px;
+  height: 90vh;
+  top: 5vh;
+  left: calc(50vw - 250px);
+  overflow-y: auto;
+  box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+.chitchat-editor>div {
+  margin: 5px;
+  margin-bottom: 20px;
+  flex-grow: 0;
+}
+
+.description-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.description-container>p {
+  font-size: 12px;
+}
+
+.chitchat-editor textarea {
+  width: 100%;
+  min-height: 200px;
+  margin-bottom: 10px;
+}

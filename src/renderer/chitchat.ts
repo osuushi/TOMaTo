@@ -56,7 +56,8 @@ class ChitchatWrapper {
             <option value="gpt-3.5-turbo" ${model === "gpt-3.5-turbo" ? "selected" : ""}>GPT-3.5 Turbo</option>
             <option value="gpt-4" ${model === "gpt-4" ? "selected" : ""}>GPT-4</option>
           </select>
-        <div>
+        </div>
+        <div class="description-container">
           <label for="chitchat-prompts">Prompts</label>
           <p>Use %s to indicate where the input should go. You can use it more than once.</p>
           <p>Separate prompts with @@@ on its own line to form a chain</p>
