@@ -1,4 +1,4 @@
-import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, CreateChatCompletionRequest, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
 import { Chitchat } from "../../shared/storage";
 
 export async function executeChitChat(chitchat: Chitchat, query: string): Promise<string> {
