@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -68,6 +68,23 @@ app.whenReady().then(() => {
     // Unminimize the window if it is minimized
     BrowserWindow.getFocusedWindow()?.restore()
   })
+
+  console.log("Registering shortcut")
+  const ret = globalShortcut.register('Alt+F19', () => {
+    console.log('CommandOrControl+Shift+F19 is pressed')
+    // Bring app to front
+    BrowserWindow.getAllWindows()[0].show()
+  })
+  if (!ret) {
+    console.log('registration failed')
+  }
+
+  app.dock.hide();
+})
+
+app.on('will-quit', () => {
+  // Unregister all shortcuts.
+  globalShortcut.unregisterAll()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
