@@ -30,6 +30,15 @@ const builtinsWithoutUuids: ChitchatWithoutUuid[] = [{
   ]
 },
 {
+  mnemonic: "emoth",
+  fullName: "Emotions Thesaurus",
+  description: "Find behaviors similar to another behavior",
+  model: "gpt-3.5-turbo",
+  promptChain: [
+    "What are some alternative behaviors that convey the same emotion as %s? Put them in a bulleted list, and do not include any other text."
+  ]
+},
+{
   mnemonic: "haiku",
   fullName: "Haiku",
   description: "Write a haiku about a topic",
