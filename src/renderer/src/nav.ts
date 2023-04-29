@@ -1,5 +1,22 @@
 import { renderSearch } from "./search"
 import { renderSettings } from "./settings"
+import { renderChat } from "./chat"
+
+// Enum for valid active views
+export enum View {
+  Search = "search",
+  Chat = "chat",
+  Settings = "settings"
+}
+
+let lastView = View.Search
+
+// Mapings of views to activate functions
+const VIEW_ACTIVATORS = {
+  [View.Search]: activateSearch,
+  [View.Chat]: activateChat,
+  [View.Settings]: activateSettings
+}
 
 export function setupNav() {
   document.querySelector("#nav-search")!.addEventListener("click", activateSearch)
@@ -8,22 +25,29 @@ export function setupNav() {
 }
 
 export function activateSearch() {
-  setActive("search")
+  setActive(View.Search)
   renderSearch()
 }
 
 export function activateChat() {
-  setActive("chat")
+  setActive(View.Chat)
+  renderChat()
 }
 
 export function activateSettings() {
-  setActive("settings")
+  setActive(View.Settings)
   renderSettings()
 }
 
-function setActive(key: string) {
+export function activateLastView() {
+  // Run the activator for the last view
+  VIEW_ACTIVATORS[lastView]()
+}
+
+function setActive(view: View) {
+  lastView = view
   document.querySelector("#content .active")!.classList.remove("active")
   document.querySelector("#nav .active")!.classList.remove("active")
-  document.querySelector(`.${key}-view`)!.classList.add("active")
-  document.querySelector(`#nav-${key}`)!.classList.add("active")
+  document.querySelector(`.${view}-view`)!.classList.add("active")
+  document.querySelector(`#nav-${view}`)!.classList.add("active")
 }

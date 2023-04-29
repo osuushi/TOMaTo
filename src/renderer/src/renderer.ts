@@ -1,5 +1,6 @@
-import { setupNav, activateChat, activateSearch, activateSettings } from "./nav"
+import { setupNav, activateChat, activateSearch, activateSettings, activateLastView } from "./nav"
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search"
+import { setupChat } from "./chat"
 
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +12,7 @@ function start(): void {
   bindKeys()
   setupNav()
   setupSearch()
+  setupChat()
   initEnforcerLoop()
 }
 
@@ -91,11 +93,7 @@ function bindKeys() {
 
 // Listen for activate messages from the background process
 window.electron.ipcRenderer.on('activate', () => {
-  // Focus the search input if it's there
-  const searchInput = document.querySelector('#search-input') as HTMLInputElement
-  if (searchInput) {
-    searchInput.focus()
-  }
+  activateLastView()
 })
 
 init()
