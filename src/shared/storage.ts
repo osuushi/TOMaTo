@@ -3,6 +3,14 @@
 import { Schema } from "electron-store"
 
 export const schema: Schema<any> = {
+  activationShortcut: {
+    type: 'string',
+    default: '',
+  },
+  hideDockIcon: {
+    type: 'boolean',
+    default: false,
+  },
   openAiAPIKey: {
     type: 'string',
     default: '',

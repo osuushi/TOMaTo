@@ -5,7 +5,7 @@ import icon from '../../resources/icon.png?asset'
 import Store from 'electron-store'
 
 Store.initRenderer()
-
+const store = new Store()
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -62,24 +62,35 @@ app.whenReady().then(() => {
   createWindow()
 
   app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    // Unminimize the window if it is minimized
-    BrowserWindow.getFocusedWindow()?.restore()
-  })
-
-  console.log("Registering shortcut")
-  const ret = globalShortcut.register('Alt+F19', () => {
-    console.log('CommandOrControl+Shift+F19 is pressed')
-    // Bring app to front
     BrowserWindow.getAllWindows()[0].show()
   })
-  if (!ret) {
-    console.log('registration failed')
-  }
 
-  app.dock.hide();
+  updateActivationShortcut()
+
+  if (store.get("hideDockIcon") as boolean) app.dock.hide()
+})
+
+function updateActivationShortcut() {
+  globalShortcut.unregisterAll();
+  const shortcut = store.get("activationShortcut") as string | undefined
+  if (shortcut) {
+    const ret = globalShortcut.register(shortcut, () => {
+      // Bring app to front
+      BrowserWindow.getAllWindows()[0].show()
+    })
+    if (!ret) {
+      console.log('registration failed')
+    }
+  }
+}
+
+ipcMain.on('update-activation-shortcut', () => {
+  updateActivationShortcut()
+})
+
+ipcMain.on('update-hide-dock-icon', () => {
+  if (store.get("hideDockIcon") as boolean) app.dock.hide()
+  else app.dock.show()
 })
 
 app.on('will-quit', () => {
@@ -95,7 +106,6 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
 
 ipcMain.on("hide", () => {
   // If on macos hide the app, otherwise, minimize

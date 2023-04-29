@@ -29,10 +29,34 @@
     </div>
     <div class="main-view settings-view">
       <h1>Settings:</h1>
-      <div><label for="openai-key">
+      <div>
+        <label for="openai-key">
           OpenAI API Key:
         </label>
         <input type="password" id="openai-key" placeholder="OpenAI API Key" />
+      </div>
+      <div>
+        <label for="activation-shortcut">
+          Activation Shortcut:
+        </label>
+        <input type="text" id="activation-shortcut" placeholder="e.g. CommandOrControl+Alt+Space" />
+        <p>
+          <small>
+            <a href="https://www.electronjs.org/docs/api/accelerator" target="_blank">See Electron documentation for
+              valid shortcuts</a>
+          </small>
+        </p>
+      </div>
+      <div>
+        <label for="Hide Dock Icon">
+          Hide Dock Icon:
+        </label>
+        <input type="checkbox" id="hide-dock-icon" />
+        <p>
+          <small>
+            For some reason, clicking this over and over again will cause the app to crash. So don't do that.
+          </small>
+        </p>
       </div>
     </div>
     <script type="module" src="./src/renderer.ts"></script>

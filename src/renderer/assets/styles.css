@@ -80,7 +80,17 @@ body {
 }
 
 .settings-view {
+  box-sizing: border-box;
   padding: 10px;
+}
+
+.settings-view>div {
+  margin: 10px;
+}
+
+.settings-view input[type="text"] {
+  display: block;
+  width: 400px;
 }
 
 #content {
