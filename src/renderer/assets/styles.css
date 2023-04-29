@@ -134,6 +134,21 @@ body {
   overflow-y: auto;
 }
 
+.output select {
+  padding: 5px;
+  min-width: 100%;
+  max-width: 70vw;
+  font-size: 18px;
+  border-radius: 10px;
+  overflow: auto;
+}
+
+.output select option {
+  padding: 5px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
 .output-screen {
   display: block;
   content: " ";

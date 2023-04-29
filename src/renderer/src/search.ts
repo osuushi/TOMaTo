@@ -1,6 +1,7 @@
 import { filteredChitChats, wrapChitChats } from "../chitchat";
 import { onGlobalEvent } from "../globalEvents";
 import { executeChitChat } from "./chat";
+import { renderOutputHtml } from "./output_parser";
 
 export function setupSearch() {
   onGlobalEvent("chitchats-updated", () => {
@@ -37,8 +38,14 @@ export function setupSearch() {
         document.body.appendChild(outputScreen);
         const outputBox = document.createElement("div");
         outputBox.classList.add("output");
-        outputBox.textContent = result;
+        outputBox.innerHTML = renderOutputHtml(result);
         document.body.appendChild(outputBox);
+        // If there's a select, focus it
+        const select = outputBox.querySelector("select");
+        if (select) {
+          select.focus();
+        }
+
         positionOutput();
       }, (error) => {
         loadingOverlay.remove();

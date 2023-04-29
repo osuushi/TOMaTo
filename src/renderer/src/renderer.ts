@@ -55,6 +55,17 @@ function bindKeys() {
       electron.ipcRenderer.send('hide')
     } else if (e.key == "Enter") {
       if (outputScreen) {
+        // If there's a select focused, send a copy command to the main process
+        const select = document.querySelector('select:focus') as HTMLSelectElement | null
+        if (select) {
+          // Check if there's a selected option
+          const selectedOption = select.options[select.selectedIndex]
+          if (selectedOption) {
+            // @ts-ignore (define in dts)
+            electron.ipcRenderer.send('copy', selectedOption.value)
+          }
+        }
+
         hideOutput()
         searchInput.focus();
         return

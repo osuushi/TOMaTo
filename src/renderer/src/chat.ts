@@ -25,10 +25,13 @@ if (FAKE_CHITCHAT) {
   executeChitChat = async (): Promise<string> => {
     await new Promise(resolve => setTimeout(resolve));
     return dedent`
+        Sure, here are some fruits:
         • apples
         • bananas
         • pears
         • oranges
+
+        I hope you like those fruits. I like them a lot.
       `;
   }
 }

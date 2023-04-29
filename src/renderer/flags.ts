@@ -1,1 +1,1 @@
-export const FAKE_CHITCHAT = true;
+export const FAKE_CHITCHAT = false;
