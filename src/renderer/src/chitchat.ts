@@ -1,4 +1,4 @@
-import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
+import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, OpenAIApi } from "openai";
 import { Chitchat } from "../../shared/storage";
 import { FAKE_CHITCHAT } from "../flags";
 import { getClient } from "./openai";
