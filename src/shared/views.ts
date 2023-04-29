@@ -2,5 +2,5 @@
 export enum View {
   Search = "search",
   Chat = "chat",
-  Settings = "settings"
+  Settings = "settings",
 }

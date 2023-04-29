@@ -1,17 +1,19 @@
-import { filteredChitChats, wrapChitChats } from "../chitchat";
-import { onGlobalEvent } from "../globalEvents";
+import { filteredChitChats, wrapChitChats } from "./chitchat_view";
+import { onGlobalEvent } from "./globalEvents";
 import { executeChitChat } from "./chitchat";
 import { renderOutputHtml } from "./output_parser";
 
 export function setupSearch() {
   onGlobalEvent("chitchats-updated", () => {
     renderSearch();
-  })
+  });
 
-  const searchInput = document.querySelector("#search-input")! as HTMLInputElement;
+  const searchInput = document.querySelector(
+    "#search-input"
+  )! as HTMLInputElement;
   searchInput.addEventListener("input", () => {
     renderSearch();
-  })
+  });
   searchInput.addEventListener("keydown", (e) => {
     const keydownEvent = e as KeyboardEvent;
     if (keydownEvent.key === "Enter") {
@@ -31,28 +33,31 @@ export function setupSearch() {
       loadingOverlay.classList.add("loading-overlay");
       document.body.appendChild(loadingOverlay);
 
-      executeChitChat(currentChitChat, getSubQuery()).then((result) => {
-        loadingOverlay.remove();
-        const outputScreen = document.createElement("div");
-        outputScreen.classList.add("output-screen");
-        document.body.appendChild(outputScreen);
-        const outputBox = document.createElement("div");
-        outputBox.classList.add("output");
-        outputBox.innerHTML = renderOutputHtml(result);
-        document.body.appendChild(outputBox);
-        // If there's a select, focus it
-        const select = outputBox.querySelector("select");
-        if (select) {
-          select.focus();
-        }
+      executeChitChat(currentChitChat, getSubQuery()).then(
+        (result) => {
+          loadingOverlay.remove();
+          const outputScreen = document.createElement("div");
+          outputScreen.classList.add("output-screen");
+          document.body.appendChild(outputScreen);
+          const outputBox = document.createElement("div");
+          outputBox.classList.add("output");
+          outputBox.innerHTML = renderOutputHtml(result);
+          document.body.appendChild(outputBox);
+          // If there's a select, focus it
+          const select = outputBox.querySelector("select");
+          if (select) {
+            select.focus();
+          }
 
-        positionOutput();
-      }, (error) => {
-        loadingOverlay.remove();
-        alert(error);
-      })
+          positionOutput();
+        },
+        (error) => {
+          loadingOverlay.remove();
+          alert(error);
+        }
+      );
     }
-  })
+  });
 
   renderSearch();
 }
@@ -62,16 +67,16 @@ export function renderSearch() {
   if (!document.querySelector(".search-view.active")) {
     return;
   }
-  const query = getQuery()
+  const query = getQuery();
   const wrappers = wrapChitChats(filteredChitChats(query));
   const container = document.querySelector("#search-results")!;
   container.innerHTML = "";
-  wrappers.forEach(wrapper => {
+  wrappers.forEach((wrapper) => {
     const element = wrapper.makeWidgetElement();
     container.appendChild(element);
-  })
+  });
 
-  searchInput().focus()
+  searchInput().focus();
 }
 
 function searchInput(): HTMLInputElement {
@@ -90,7 +95,9 @@ function getSubQuery(): string {
 }
 
 function positionOutput() {
-  const outputBox = document.querySelector(".output") as HTMLDivElement | undefined;
+  const outputBox = document.querySelector(".output") as
+    | HTMLDivElement
+    | undefined;
   if (!outputBox) {
     return;
   }
@@ -109,10 +116,16 @@ export function initEnforcerLoop() {
   function loop() {
     positionOutput();
     // If we're on the search screen and there's no output, or editor, focus the search input
-    const searchInput = document.querySelector("#search-input") as HTMLInputElement;
+    const searchInput = document.querySelector(
+      "#search-input"
+    ) as HTMLInputElement;
     const outputScreen = document.querySelector(".output-screen");
     const editor = document.querySelector(".chitchat-editor");
-    if (document.querySelector(".search-view.active") && !outputScreen && !editor) {
+    if (
+      document.querySelector(".search-view.active") &&
+      !outputScreen &&
+      !editor
+    ) {
       searchInput.focus();
     } else {
       // Otherwise make sure the search input is not focused

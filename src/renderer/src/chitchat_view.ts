@@ -1,4 +1,4 @@
-import { Chitchat, ModelName } from "../shared/storage";
+import { Chitchat, ModelName } from "../../shared/storage";
 import htmlEscape from "html-escape";
 import builtins from "./builtins";
 import { triggerGlobalEvent } from "./globalEvents";
@@ -27,7 +27,7 @@ class ChitchatWrapper {
           <button class="chitchat-delete" title="Delete">🚫</button>
         </div>
       </div>
-    `
+    `;
   }
 
   renderEditor() {
@@ -53,8 +53,12 @@ class ChitchatWrapper {
         <div>
           <label for="chitchat-model">Model</label>
           <select id="chitchat-model">
-            <option value="gpt-3.5-turbo" ${model === "gpt-3.5-turbo" ? "selected" : ""}>GPT-3.5 Turbo</option>
-            <option value="gpt-4" ${model === "gpt-4" ? "selected" : ""}>GPT-4</option>
+            <option value="gpt-3.5-turbo" ${
+              model === "gpt-3.5-turbo" ? "selected" : ""
+            }>GPT-3.5 Turbo</option>
+            <option value="gpt-4" ${
+              model === "gpt-4" ? "selected" : ""
+            }>GPT-4</option>
           </select>
         </div>
         <div class="description-container">
@@ -67,7 +71,7 @@ class ChitchatWrapper {
           <button class="chitchat-cancel">Cancel</button>
         </div>
       </div>
-    `
+    `;
   }
 
   makeElement(html: string): HTMLDivElement {
@@ -79,17 +83,21 @@ class ChitchatWrapper {
   makeWidgetElement(): HTMLDivElement {
     const element = this.makeElement(this.renderWidget());
 
-    element.querySelector(".chitchat-duplicate")!.addEventListener("click", () => {
-      this.duplicate();
-    });
+    element
+      .querySelector(".chitchat-duplicate")!
+      .addEventListener("click", () => {
+        this.duplicate();
+      });
 
     if (isBuiltIn(this.chitchat)) {
       element.querySelector(".chitchat-delete")!.remove();
       element.querySelector(".chitchat-edit")!.remove();
     } else {
-      element.querySelector(".chitchat-delete")!.addEventListener("click", () => {
-        this.delete();
-      });
+      element
+        .querySelector(".chitchat-delete")!
+        .addEventListener("click", () => {
+          this.delete();
+        });
       element.querySelector(".chitchat-edit")!.addEventListener("click", () => {
         this.edit();
       });
@@ -105,20 +113,32 @@ class ChitchatWrapper {
     element.querySelector(".chitchat-cancel")!.addEventListener("click", () => {
       element.remove();
     });
-    return element
+    return element;
   }
 
   save(element: HTMLDivElement) {
     const customs = customChitchats();
-    let index = customs.findIndex(chitchat => chitchat.uuid === this.chitchat.uuid);
+    let index = customs.findIndex(
+      (chitchat) => chitchat.uuid === this.chitchat.uuid
+    );
     const newChitchat = {
       ...this.chitchat,
-      model: (element.querySelector("#chitchat-model") as HTMLSelectElement).value as ModelName,
-      mnemonic: (element.querySelector("#chitchat-mnemonic") as HTMLInputElement).value,
-      fullName: (element.querySelector("#chitchat-full-name") as HTMLInputElement).value,
-      description: (element.querySelector("#chitchat-description") as HTMLInputElement).value,
-      promptChain: parseChitchatPrompts((element.querySelector("#chitchat-prompts") as HTMLTextAreaElement).value),
-    }
+      model: (element.querySelector("#chitchat-model") as HTMLSelectElement)
+        .value as ModelName,
+      mnemonic: (
+        element.querySelector("#chitchat-mnemonic") as HTMLInputElement
+      ).value,
+      fullName: (
+        element.querySelector("#chitchat-full-name") as HTMLInputElement
+      ).value,
+      description: (
+        element.querySelector("#chitchat-description") as HTMLInputElement
+      ).value,
+      promptChain: parseChitchatPrompts(
+        (element.querySelector("#chitchat-prompts") as HTMLTextAreaElement)
+          .value
+      ),
+    };
     if (index === -1) {
       index = customs.length;
     }
@@ -141,24 +161,25 @@ class ChitchatWrapper {
       uuid: crypto.randomUUID(),
       mnemonic: ``,
       fullName: `${this.chitchat.fullName} (copy)`,
-    }
+    };
     const wrapper = new ChitchatWrapper(newChitchat);
     wrapper.edit();
   }
 
   delete() {
     let customs = customChitchats();
-    customs = customs.filter(chitchat => chitchat.uuid !== this.chitchat.uuid);
+    customs = customs.filter(
+      (chitchat) => chitchat.uuid !== this.chitchat.uuid
+    );
     window.storeSet("chitchats", customs);
     triggerGlobalEvent("chitchats-updated");
   }
 }
 
-
 export function allChitChats(): Chitchat[] {
   const customs: Chitchat[] = customChitchats();
   customs.reverse(); // this shows last created first
-  return [...builtins, ...customs]
+  return [...builtins, ...customs];
 }
 
 function customChitchats(): Chitchat[] {
@@ -167,37 +188,46 @@ function customChitchats(): Chitchat[] {
 
 export function filteredChitChats(filterText: string): Chitchat[] {
   const all = allChitChats();
-  const searchWord = filterText.split(' ')[0].toLowerCase();
-  if (searchWord === '') {
+  const searchWord = filterText.split(" ")[0].toLowerCase();
+  if (searchWord === "") {
     return all;
   }
 
   // If any chitchat has an exact match for the mnemonic, it goes first
-  const mnemonicMatch = all.find(chitchat => chitchat.mnemonic.toLowerCase() === searchWord);
+  const mnemonicMatch = all.find(
+    (chitchat) => chitchat.mnemonic.toLowerCase() === searchWord
+  );
 
   // Create the fuzzyfind pattern, which is just a regex with .* between each
   // letter. Escape each letter first
-  const fuzzyFindPattern = searchWord.split('').map(char => `.*${escapeRegExp(char)}`).join('.*');
-  const fuzzyFindRegex = new RegExp(fuzzyFindPattern, 'i');
-  let fuzzyFindMatches = all.filter(chitchat => fuzzyFindRegex.test(chitchat.fullName + chitchat.description));
+  const fuzzyFindPattern = searchWord
+    .split("")
+    .map((char) => `.*${escapeRegExp(char)}`)
+    .join(".*");
+  const fuzzyFindRegex = new RegExp(fuzzyFindPattern, "i");
+  let fuzzyFindMatches = all.filter((chitchat) =>
+    fuzzyFindRegex.test(chitchat.fullName + chitchat.description)
+  );
   // If there's an exact match, remove it from the fuzzyfind matches
   if (mnemonicMatch) {
     fuzzyFindMatches = [
       mnemonicMatch,
-      ...fuzzyFindMatches.filter(chitchat => chitchat.uuid !== mnemonicMatch.uuid)
-    ]
+      ...fuzzyFindMatches.filter(
+        (chitchat) => chitchat.uuid !== mnemonicMatch.uuid
+      ),
+    ];
   }
   return fuzzyFindMatches;
 }
 
 export function wrapChitChats(chitchats: Chitchat[]): ChitchatWrapper[] {
-  return chitchats.map(chitchat => new ChitchatWrapper(chitchat))
+  return chitchats.map((chitchat) => new ChitchatWrapper(chitchat));
 }
 
 function escapeRegExp(char: string): string {
-  return char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return char.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function isBuiltIn(chitchat: Chitchat): boolean {
-  return builtins.some(builtin => builtin.uuid === chitchat.uuid);
+  return builtins.some((builtin) => builtin.uuid === chitchat.uuid);
 }

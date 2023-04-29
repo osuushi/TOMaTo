@@ -6,7 +6,6 @@ import htmlEscape from "html-escape";
 //  - text
 //  - list
 
-
 type Chunk = TextChunk | ListChunk;
 
 // Text chunks just render in a p tag
