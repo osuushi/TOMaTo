@@ -1,5 +1,5 @@
-import { ModelName } from "../shared/storage";
-import { Chitchat } from "../shared/storage";
+import { ModelName } from "../../shared/storage";
+import { Chitchat } from "../../shared/storage";
 
 type ChitchatWithoutUuid = Omit<Chitchat, "uuid">;
 
