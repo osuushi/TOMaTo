@@ -70,6 +70,15 @@ function bindKeys() {
         searchInput.focus();
         return
       }
+    } else if (e.key === 'c' && (e.metaKey || e.ctrlKey)) {
+      const output = document.querySelector('.output')?.textContent
+      if (output) {
+        e.preventDefault()
+        e.stopPropagation()
+        // @ts-ignore (define in dts)
+        electron.ipcRenderer.send('copy', output)
+        return
+      }
     }
   })
 }
