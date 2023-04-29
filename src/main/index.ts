@@ -114,3 +114,11 @@ app.on('before-quit', () => {
   // Quit the application
   app.exit()
 });
+
+// Polling loop to hide the window if the app is not active
+setInterval(() => {
+  const mainWindow = BrowserWindow.getAllWindows()[0]
+  if (mainWindow && !mainWindow.isFocused()) {
+    mainWindow.hide()
+  }
+}, 100)
