@@ -1,13 +1,8 @@
 import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum } from "openai";
 import { getClient } from "./openai";
+import { ModelName } from "../../shared/storage";
 
 let instance: ChatView
-
-// Model enum
-export enum Model {
-  Gpt35Turbo = "gpt-3.5-turbo",
-  Gpt4 = "gpt-4"
-}
 
 export function setupChat() {
   instance = new ChatView()
@@ -67,7 +62,7 @@ export class ChatView {
 
     let response = await client.createChatCompletion({
       messages: this.messages,
-      model: Model.Gpt35Turbo
+      model: ModelName.Gpt35Turbo,
     })
 
     let responseMessage = response?.data?.choices[0]?.message?.content
