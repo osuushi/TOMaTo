@@ -1,67 +1,93 @@
-import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
-import { Chitchat } from "../../shared/storage";
-import { FAKE_CHITCHAT } from "../flags";
-import dedent from "dedent";
+import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum } from "openai";
+import { getClient } from "./openai";
+import { ModelName } from "../../shared/storage";
 
-let executeChitChat: (chitchat: Chitchat, query: string) => Promise<string>;
+let instance: ChatView
 
-executeChitChat = async (chitchat: Chitchat, query: string): Promise<string> => {
-  const config = new Configuration({
-    apiKey: window.storeGet("openAiAPIKey"),
-  })
-
-  // Electron doesn't like the User-Agent header being set
-  delete config.baseOptions.headers["User-Agent"];
-
-  const client = new OpenAIApi(config);
-  const messages = messagesForQuery(chitchat, query)
-
-  return await converse(client, chitchat.model, messages);
+export function setupChat() {
+  instance = new ChatView()
 }
 
-// Set FAKE_CHITCHAT in src/renderer/flags.ts to true to use this fake chitchat
-// and avoid using OpenAI in testing
-if (FAKE_CHITCHAT) {
-  executeChitChat = async (): Promise<string> => {
-    await new Promise(resolve => setTimeout(resolve));
-    return dedent`
-        Sure, here are some fruits:
-        • apples
-        • bananas
-        • pears
-        • oranges
+export function renderChat() {
+  instance.render()
+}
 
-        I hope you like those fruits. I like them a lot.
-      `;
+export class ChatView {
+  messages: ChatCompletionRequestMessage[] = []
+
+  get sendButton(): HTMLButtonElement {
+    return document.querySelector('#chat-input-send') as HTMLButtonElement
   }
-}
 
-export { executeChitChat };
+  get input(): HTMLInputElement {
+    return document.querySelector('#chat-input-text') as HTMLInputElement
+  }
 
-function messagesForQuery(chitchat: Chitchat, query: string): string[] {
-  return chitchat.promptChain.map(prompt => {
-    return prompt.replaceAll("%s", query)
-  })
-}
+  get message(): string {
+    return this.input.value
+  }
 
-async function converse(client: OpenAIApi, model: string, messages: string[]): Promise<string> {
-  const transcript: ChatCompletionRequestMessage[] = [];
-  for (let i = 0; i < messages.length; i++) {
-    transcript.push({
-      role: ChatCompletionRequestMessageRoleEnum.User,
-      content: messages[i],
+
+  constructor() {
+    this.input.addEventListener('keydown', (event: KeyboardEvent) => {
+      // Check if command-enter was pressed
+      if (event.key === 'Enter' && event.metaKey) {
+        this.acceptChat()
+      }
+    });
+
+    this.sendButton.addEventListener('click', () => {
+      this.acceptChat()
+    })
+  }
+
+  addUserMessage(message: string) {
+    this.messages.push({
+      content: message,
+      role: ChatCompletionRequestMessageRoleEnum.User
+    })
+  }
+
+  addAIResponse(message: string) {
+    this.messages.push({
+      content: message,
+      role: ChatCompletionRequestMessageRoleEnum.Assistant
+    })
+  }
+
+  async acceptChat() {
+    let client = getClient()
+    this.addUserMessage(this.message)
+    this.input.value = ''
+
+    let response = await client.createChatCompletion({
+      messages: this.messages,
+      model: ModelName.Gpt35Turbo,
     })
 
-    const response = await client.createChatCompletion({
-      model,
-      messages: transcript,
-    })
-    const message = response.data.choices[0].message
-    if (!message) {
-      return "Sorry, OpenAI responded with an empty message.";
+    let responseMessage = response?.data?.choices[0]?.message?.content
+    if (responseMessage && responseMessage.length > 0) {
+      this.addAIResponse(responseMessage)
     }
 
-    transcript.push(message);
+    this.renderMessages()
+
+    this.input.focus()
   }
-  return transcript[transcript.length - 1].content;
+
+  get messagesDiv(): HTMLDivElement {
+    return document.querySelector('#chat-messages') as HTMLDivElement
+  }
+
+  renderMessages() {
+    this.messagesDiv.innerHTML = this.messages.map(this.renderMessage).join('')
+  }
+
+  renderMessage(message: ChatCompletionRequestMessage) {
+    return `<div class="chat-message ${message.role}">${message.role === ChatCompletionRequestMessageRoleEnum.User ? "You" : "ChatGPT"}: ${message.content}</div>`
+  }
+
+  render() {
+    this.input.focus()
+  }
 }

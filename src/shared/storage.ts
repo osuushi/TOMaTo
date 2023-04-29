@@ -40,7 +40,11 @@ export const schema: Schema<any> = {
 }
 
 // Types for chitchats
-export type ModelName = "gpt-3.5-turbo" | "gpt-4"
+export enum ModelName {
+  Gpt35Turbo = "gpt-3.5-turbo",
+  Gpt4 = "gpt-4",
+}
+
 export interface Chitchat {
   uuid: string
   fullName: string

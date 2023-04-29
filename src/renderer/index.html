@@ -15,6 +15,7 @@
   <!-- Flexbox with small nav on the left and main content on the right -->
   <div id="nav">
     <button id="nav-search" class="active">▶️</button>
+    <button id="nav-chat">💬</button>
     <button id="nav-settings">⚙️</button>
   </div>
   <div id="content">
@@ -27,6 +28,16 @@
         <div id="search-results"></div>
       </div>
     </div>
+    <div class="main-view chat-view">
+      <h1>Welcome to Chat!</h1>
+      <div id="chat">
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+          <input type="text" id="chat-input-text" placeholder="Type a message..." spellcheck="false" />
+          <button id="chat-input-send">Send</button>
+        </div>
+      </div>
+    </div>
     <div class="main-view settings-view">
       <h1>Settings:</h1>
       <div>
@@ -34,6 +45,7 @@
           OpenAI API Key:
         </label>
         <input type="password" id="openai-key" placeholder="OpenAI API Key" />
+        <small><a href="https://platform.openai.com/account/api-keys" target="_blank">Create a key</a></small>
       </div>
       <div>
         <label for="activation-shortcut">

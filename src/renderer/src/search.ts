@@ -1,6 +1,6 @@
 import { filteredChitChats, wrapChitChats } from "../chitchat";
 import { onGlobalEvent } from "../globalEvents";
-import { executeChitChat } from "./chat";
+import { executeChitChat } from "./chitchat";
 import { renderOutputHtml } from "./output_parser";
 
 export function setupSearch() {
@@ -70,10 +70,16 @@ export function renderSearch() {
     const element = wrapper.makeWidgetElement();
     container.appendChild(element);
   })
+
+  searchInput().focus()
+}
+
+function searchInput(): HTMLInputElement {
+  return document.querySelector("#search-input") as HTMLInputElement;
 }
 
 function getQuery(): string {
-  return (document.querySelector("#search-input") as HTMLInputElement).value;
+  return searchInput().value;
 }
 
 function getSubQuery(): string {

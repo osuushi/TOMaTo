@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import Store from 'electron-store'
+import { View } from '../shared/views'
 
 Store.initRenderer()
 const store = new Store()
@@ -65,12 +66,12 @@ app.whenReady().then(() => {
     BrowserWindow.getAllWindows()[0].show()
   })
 
-  updateActivationShortcut()
+  updateGlobalShortcuts()
 
   if (store.get("hideDockIcon") as boolean) app.dock.hide()
 })
 
-function updateActivationShortcut() {
+function updateGlobalShortcuts() {
   globalShortcut.unregisterAll();
   const shortcut = store.get("activationShortcut") as string | undefined
   if (shortcut) {
@@ -82,10 +83,17 @@ function updateActivationShortcut() {
       console.log('registration failed')
     }
   }
+
+  const devToolsShortcut = globalShortcut.register('CommandOrControl+Shift+I', () => {
+    BrowserWindow.getFocusedWindow()?.webContents.toggleDevTools()
+  })
+  if (!devToolsShortcut) {
+    console.log('registration failed')
+  }
 }
 
 ipcMain.on('update-activation-shortcut', () => {
-  updateActivationShortcut()
+  updateGlobalShortcuts()
 })
 
 ipcMain.on('update-hide-dock-icon', () => {
@@ -125,8 +133,15 @@ app.on('before-quit', () => {
   app.exit()
 });
 
+let currentView: View = View.Search;
+ipcMain.on("set-view", (_, view) => {
+  currentView = view;
+})
+
 // Polling loop to hide the window if the app is not active
 setInterval(() => {
+  if (currentView !== View.Search) return;
+
   const mainWindow = BrowserWindow.getAllWindows()[0]
   if (mainWindow && !mainWindow.isFocused()) {
     mainWindow.hide()

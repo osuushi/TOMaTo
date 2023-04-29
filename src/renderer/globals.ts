@@ -6,6 +6,8 @@ declare global {
     storeGet: (key: string) => any
     storeSet: (key: string, value: any) => void
   }
+
+  var electron: ElectronAPI
 }
 
 export default global

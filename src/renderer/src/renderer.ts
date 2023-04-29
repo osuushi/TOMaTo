@@ -1,5 +1,6 @@
-import { setupNav } from "./nav"
+import { setupNav, activateChat, activateSearch, activateSettings, activateLastView } from "./nav"
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search"
+import { setupChat } from "./chat"
 
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {
@@ -11,6 +12,7 @@ function start(): void {
   bindKeys()
   setupNav()
   setupSearch()
+  setupChat()
   initEnforcerLoop()
 }
 
@@ -79,17 +81,19 @@ function bindKeys() {
         electron.ipcRenderer.send('copy', output)
         return
       }
+    } else if (e.key === '1' && (e.metaKey || e.ctrlKey)) {
+      activateSearch()
+    } else if (e.key === '2' && (e.metaKey || e.ctrlKey)) {
+      activateChat()
+    } else if (e.key === '3' && (e.metaKey || e.ctrlKey)) {
+      activateSettings()
     }
   })
 }
 
 // Listen for activate messages from the background process
 window.electron.ipcRenderer.on('activate', () => {
-  // Focus the search input if it's there
-  const searchInput = document.querySelector('#search-input') as HTMLInputElement
-  if (searchInput) {
-    searchInput.focus()
-  }
+  activateLastView()
 })
 
 init()
