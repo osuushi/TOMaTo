@@ -1,4 +1,4 @@
-import { setupNav } from "./nav"
+import { setupNav, activateChat, activateSearch, activateSettings } from "./nav"
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search"
 
 export function init(): void {
@@ -79,6 +79,12 @@ function bindKeys() {
         electron.ipcRenderer.send('copy', output)
         return
       }
+    } else if (e.key === '1' && (e.metaKey || e.ctrlKey)) {
+      activateSearch()
+    } else if (e.key === '2' && (e.metaKey || e.ctrlKey)) {
+      activateChat()
+    } else if (e.key === '3' && (e.metaKey || e.ctrlKey)) {
+      activateSettings()
     }
   })
 }

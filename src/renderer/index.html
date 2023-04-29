@@ -15,6 +15,7 @@
   <!-- Flexbox with small nav on the left and main content on the right -->
   <div id="nav">
     <button id="nav-search" class="active">▶️</button>
+    <button id="nav-chat">💬</button>
     <button id="nav-settings">⚙️</button>
   </div>
   <div id="content">
@@ -25,6 +26,16 @@
           <div>🔍</div><input type="text" id="search-input" placeholder="Search..." spellcheck="false" />
         </div>
         <div id="search-results"></div>
+      </div>
+    </div>
+    <div class="main-view chat-view">
+      Hello, welcome to chat
+      <div id="chat">
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+          <input type="text" id="chat-input-text" placeholder="Type a message..." spellcheck="false" />
+          <button id="chat-input-send">Send</button>
+        </div>
       </div>
     </div>
     <div class="main-view settings-view">
