@@ -1,8 +1,8 @@
-import { Chitchat, ModelName } from "../shared/storage";
+import { Chitchat, ModelName } from "../../shared/storage";
 import htmlEscape from "html-escape";
-import builtins from "./builtins";
-import { triggerGlobalEvent } from "./globalEvents";
-import { parseChitchatPrompts, stringifyPrompts } from "./custom_chitchat";
+import builtins from "../builtins";
+import { triggerGlobalEvent } from "../globalEvents";
+import { parseChitchatPrompts, stringifyPrompts } from "../custom_chitchat";
 
 class ChitchatWrapper {
   chitchat: Chitchat;

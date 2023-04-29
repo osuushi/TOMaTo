@@ -1,4 +1,4 @@
-import { filteredChitChats, wrapChitChats } from "../chitchat";
+import { filteredChitChats, wrapChitChats } from "./chitchat_view";
 import { onGlobalEvent } from "../globalEvents";
 import { executeChitChat } from "./chitchat";
 import { renderOutputHtml } from "./output_parser";
