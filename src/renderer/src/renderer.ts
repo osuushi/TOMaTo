@@ -1,6 +1,6 @@
 import { setupNav, activateChat, activateSearch, activateSettings, activateLastView } from "./nav"
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search"
-import { setupChat } from "../chat"
+import { setupChat } from "./chat"
 
 export function init(): void {
   window.addEventListener('DOMContentLoaded', () => {

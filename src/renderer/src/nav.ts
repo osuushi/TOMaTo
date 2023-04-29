@@ -1,6 +1,6 @@
 import { renderSearch } from "./search"
 import { renderSettings } from "./settings"
-import { renderChat } from "../chat"
+import { renderChat } from "./chat"
 import { View } from "../../shared/views"
 
 let lastView = View.Search

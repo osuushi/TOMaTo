@@ -1,6 +1,6 @@
 import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum } from "openai";
-import { getClient } from "./src/openai";
-import { ModelName } from "../shared/storage";
+import { getClient } from "./openai";
+import { ModelName } from "../../shared/storage";
 
 let instance: ChatView
 
