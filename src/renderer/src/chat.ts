@@ -1,7 +1,11 @@
 import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
 import { Chitchat } from "../../shared/storage";
+import { FAKE_CHITCHAT } from "../flags";
+import dedent from "dedent";
 
-export async function executeChitChat(chitchat: Chitchat, query: string): Promise<string> {
+let executeChitChat: (chitchat: Chitchat, query: string) => Promise<string>;
+
+executeChitChat = async (chitchat: Chitchat, query: string): Promise<string> => {
   const config = new Configuration({
     apiKey: window.storeGet("openAiAPIKey"),
   })
@@ -14,6 +18,22 @@ export async function executeChitChat(chitchat: Chitchat, query: string): Promis
 
   return await converse(client, chitchat.model, messages);
 }
+
+// Set FAKE_CHITCHAT in src/renderer/flags.ts to true to use this fake chitchat
+// and avoid using OpenAI in testing
+if (FAKE_CHITCHAT) {
+  executeChitChat = async (): Promise<string> => {
+    await new Promise(resolve => setTimeout(resolve));
+    return dedent`
+        • apples
+        • bananas
+        • pears
+        • oranges
+      `;
+  }
+}
+
+export { executeChitChat };
 
 function messagesForQuery(chitchat: Chitchat, query: string): string[] {
   return chitchat.promptChain.map(prompt => {
