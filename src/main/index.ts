@@ -66,12 +66,12 @@ app.whenReady().then(() => {
     BrowserWindow.getAllWindows()[0].show()
   })
 
-  updateActivationShortcut()
+  updateGlobalShortcuts()
 
   if (store.get("hideDockIcon") as boolean) app.dock.hide()
 })
 
-function updateActivationShortcut() {
+function updateGlobalShortcuts() {
   globalShortcut.unregisterAll();
   const shortcut = store.get("activationShortcut") as string | undefined
   if (shortcut) {
@@ -83,10 +83,17 @@ function updateActivationShortcut() {
       console.log('registration failed')
     }
   }
+
+  const devToolsShortcut = globalShortcut.register('CommandOrControl+Shift+I', () => {
+    BrowserWindow.getFocusedWindow()?.webContents.toggleDevTools()
+  })
+  if (!devToolsShortcut) {
+    console.log('registration failed')
+  }
 }
 
 ipcMain.on('update-activation-shortcut', () => {
-  updateActivationShortcut()
+  updateGlobalShortcuts()
 })
 
 ipcMain.on('update-hide-dock-icon', () => {
