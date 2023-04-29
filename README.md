@@ -2,8 +2,8 @@
 
 ![tomato image](./resources/icon.png)
 
-TOMaTo is a fast frontend for ChatGPT which makes it easy to create simple
-prompt chains based on user input, known as "chitchats".
+TOMaTo is a quick access frontend for ChatGPT which makes it easy to create
+simple prompt chains based on user input, known as "chitchats".
 
 TOMaTo excels at finding information that you _know,_ but can't quite remember. I made it for finding stuff that was on the **T**ip **O**f **M**y (**a**hem) **To**ngue.
 
