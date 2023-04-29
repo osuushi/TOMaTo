@@ -13,6 +13,15 @@ export class ChatView {
     return document.querySelector('#chat-input-text') as HTMLInputElement
   }
 
+  constructor() {
+    this.input.addEventListener('keydown', (event: KeyboardEvent) => {
+      // Check if command-enter was pressed
+      if (event.key === 'Enter' && event.metaKey) {
+        alert(this.input.value)
+      }
+    });
+  }
+
   render() {
     this.input.focus()
   }

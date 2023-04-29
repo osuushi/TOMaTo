@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import Store from 'electron-store'
+import { View } from '../shared/views'
 
 Store.initRenderer()
 const store = new Store()
@@ -125,8 +126,15 @@ app.on('before-quit', () => {
   app.exit()
 });
 
+let currentView: View = View.Search;
+ipcMain.on("set-view", (_, view) => {
+  currentView = view;
+})
+
 // Polling loop to hide the window if the app is not active
 setInterval(() => {
+  if (currentView !== View.Search) return;
+
   const mainWindow = BrowserWindow.getAllWindows()[0]
   if (mainWindow && !mainWindow.isFocused()) {
     mainWindow.hide()

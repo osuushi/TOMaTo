@@ -1,13 +1,7 @@
 import { renderSearch } from "./search"
 import { renderSettings } from "./settings"
 import { renderChat } from "./chat"
-
-// Enum for valid active views
-export enum View {
-  Search = "search",
-  Chat = "chat",
-  Settings = "settings"
-}
+import { View } from "../../shared/views"
 
 let lastView = View.Search
 
@@ -16,6 +10,10 @@ const VIEW_ACTIVATORS = {
   [View.Search]: activateSearch,
   [View.Chat]: activateChat,
   [View.Settings]: activateSettings
+}
+
+export function currentView(): View {
+  return lastView
 }
 
 export function setupNav() {
@@ -50,4 +48,6 @@ function setActive(view: View) {
   document.querySelector("#nav .active")!.classList.remove("active")
   document.querySelector(`.${view}-view`)!.classList.add("active")
   document.querySelector(`#nav-${view}`)!.classList.add("active")
+
+  electron.ipcRenderer.send("set-view", view)
 }
