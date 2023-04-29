@@ -1,13 +1,13 @@
-import { ElectronAPI } from "@electron-toolkit/preload"
+import { ElectronAPI } from "@electron-toolkit/preload";
 
 declare global {
   interface Window {
-    electron: ElectronAPI
-    storeGet: (key: string) => any
-    storeSet: (key: string, value: any) => void
+    electron: ElectronAPI;
+    storeGet: (key: string) => any;
+    storeSet: (key: string, value: any) => void;
   }
 
-  var electron: ElectronAPI
+  var electron: ElectronAPI;
 }
 
-export default global
+export default global;

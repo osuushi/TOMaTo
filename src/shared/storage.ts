@@ -1,19 +1,19 @@
 // Schema for a settings
 
-import { Schema } from "electron-store"
+import { Schema } from "electron-store";
 
 export const schema: Schema<any> = {
   activationShortcut: {
-    type: 'string',
-    default: '',
+    type: "string",
+    default: "",
   },
   hideDockIcon: {
-    type: 'boolean',
+    type: "boolean",
     default: false,
   },
   openAiAPIKey: {
-    type: 'string',
-    default: '',
+    type: "string",
+    default: "",
   },
   chitchats: {
     type: "array",
@@ -33,11 +33,11 @@ export const schema: Schema<any> = {
         model: {
           type: "string",
           enum: ["gpt-3.5-turbo", "gpt-4"],
-        }
-      }
-    }
-  }
-}
+        },
+      },
+    },
+  },
+};
 
 // Types for chitchats
 export enum ModelName {
@@ -46,11 +46,10 @@ export enum ModelName {
 }
 
 export interface Chitchat {
-  uuid: string
-  fullName: string
-  mnemonic: string
-  description: string
-  promptChain: string[]
-  model: ModelName
+  uuid: string;
+  fullName: string;
+  mnemonic: string;
+  description: string;
+  promptChain: string[];
+  model: ModelName;
 }
-

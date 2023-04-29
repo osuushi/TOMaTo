@@ -2,8 +2,8 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Open Sans', sans-serif;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
   color: #186700;
   background-color: #dbe4d8;
   padding: 0;
@@ -108,7 +108,7 @@ body {
   padding: 10px;
 }
 
-.settings-view>div {
+.settings-view > div {
   margin: 10px;
 }
 
@@ -204,7 +204,12 @@ cycling over the entire window */
   width: 100vw;
   height: 100vh;
   mix-blend-mode: screen;
-  background: linear-gradient(90deg, rgba(255, 196, 0, 1), rgba(0, 0, 0, 1), rgba(255, 196, 0, 1));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 196, 0, 1),
+    rgba(0, 0, 0, 1),
+    rgba(255, 196, 0, 1)
+  );
   background-repeat: repeat-x;
   /* Smooth animation as defined below */
   animation: loading 1s infinite linear;
@@ -226,7 +231,7 @@ cycling over the entire window */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  background: #FAFAFA;
+  background: #fafafa;
   padding: 10px;
   width: 500px;
   height: 90vh;
@@ -236,7 +241,7 @@ cycling over the entire window */
   box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.5);
 }
 
-.chitchat-editor>div {
+.chitchat-editor > div {
   margin: 5px;
   margin-bottom: 20px;
   flex-grow: 0;
@@ -248,7 +253,7 @@ cycling over the entire window */
   position: relative;
 }
 
-.description-container>p {
+.description-container > p {
   font-size: 12px;
 }
 

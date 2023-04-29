@@ -1,6 +1,5 @@
 // Global event registration
 
-
 // Create a global event emitter
 export const globalEvents = new EventTarget();
 
