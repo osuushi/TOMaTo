@@ -248,6 +248,16 @@ cycling over the entire window */
   flex-grow: 0;
 }
 
+.chitchat-editor > div.one-field {
+  display: flex;
+  flex-direction: row;
+}
+
+.chitchat-editor > div.one-field > input {
+  flex-grow: 1;
+  margin-left: 5px;
+}
+
 .description-container {
   display: flex;
   flex-direction: column;

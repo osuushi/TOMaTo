@@ -38,15 +38,15 @@ class ChitchatWrapper {
     const prompts = htmlEscape(stringifyPrompts(this.chitchat.promptChain));
     return `
       <div class="chitchat-editor" data-uuid="${this.chitchat.uuid}">
-        <div>
+        <div class="one-field">
           <label for="chitchat-mnemonic">Mnemonic</label>
           <input type="text" id="chitchat-mnemonic" value="${mnemonic}">
         </div>
-        <div>
+        <div class="one-field">
           <label for="chitchat-full-name">Full Name</label>
           <input type="text" id="chitchat-full-name" value="${fullName}">
         </div>
-        <div>
+        <div class="one-field">
           <label for="chitchat-description">Description</label>
           <input type="text" id="chitchat-description" value="${description}">
         </div>
