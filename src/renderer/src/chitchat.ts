@@ -1,19 +1,14 @@
 import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum, Configuration, OpenAIApi } from "openai";
 import { Chitchat } from "../../shared/storage";
 import { FAKE_CHITCHAT } from "../flags";
+import { getClient } from "./openai";
 import dedent from "dedent";
 
 let executeChitChat: (chitchat: Chitchat, query: string) => Promise<string>;
 
 executeChitChat = async (chitchat: Chitchat, query: string): Promise<string> => {
-  const config = new Configuration({
-    apiKey: window.storeGet("openAiAPIKey"),
-  })
+  const client = getClient()
 
-  // Electron doesn't like the User-Agent header being set
-  delete config.baseOptions.headers["User-Agent"];
-
-  const client = new OpenAIApi(config);
   const messages = messagesForQuery(chitchat, query)
 
   return await converse(client, chitchat.model, messages);
