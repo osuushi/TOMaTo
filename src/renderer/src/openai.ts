@@ -8,8 +8,8 @@ export function getClient(): OpenAIApi {
   }
 
   const config = new Configuration({
-    apiKey: window.storeGet("openAiAPIKey"),
-  });
+    apiKey: getApiKey(),
+  })
 
   // Electron doesn't like the User-Agent header being set
   delete config.baseOptions.headers["User-Agent"];
@@ -18,6 +18,17 @@ export function getClient(): OpenAIApi {
   return clientInstance;
 }
 
+let apiKey = '';
+
+export function getApiKey(): string {
+  if (!apiKey) {
+    apiKey = window.storeGet("openAiAPIKey")
+  }
+
+  return apiKey
+}
+
 export function resetClient() {
-  clientInstance = undefined;
+  clientInstance = undefined
+  apiKey = ''
 }
