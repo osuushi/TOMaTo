@@ -35,7 +35,9 @@ escape three times to get back to an empty search.
 
 The following chitchats are built in:
 
-- **Thesaurus**: Look up synonyms for a word. This is more flexible than a traditional thesaurus, as you can type in phrases, or even made-up words in some cases. For example, if you're looking for "unshaven", but all your brain will think of is "scruff-less", TOMaTo can help you out.
+- **Define**: This is a like a traditional dictionary, but gives an in depth description of the word or phrase you give it, particularly focusing on any specific connotations. You can also give it context. For example `d drill wrt wood` will tell you about the tool and process for making holes, whereas `d drill wrt school` will tell you about practice.
+
+- **Thesaurus**: Look up synonyms for a word. This is more flexible than a traditional thesaurus, as you can type in phrases, or even made-up words in some cases. For example, if you're looking for "unshaven", but all your brain will think of is "scruff-less", TOMaTo can help you out. As with Deep Dictionary, you can add context to get more specific results.
 
 - **Reverse Dictionary**: Can't remember the word for something? Just describe the concept and let the model figure it out for you
 

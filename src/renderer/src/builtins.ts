@@ -1,9 +1,23 @@
 import { ModelName } from "../../shared/storage";
 import { Chitchat } from "../../shared/storage";
+import dedent from "dedent";
 
 type ChitchatWithoutUuid = Omit<Chitchat, "uuid">;
 
 const builtinsWithoutUuids: ChitchatWithoutUuid[] = [
+  {
+    mnemonic: "d",
+    fullName: "Define",
+    description:
+      "In depth explanations of words or phrases and their connotations",
+    model: ModelName.Gpt35Turbo,
+    promptChain: [
+      dedent`
+      Briefly explain the concept of "%s".
+      Be sure to call out any specific connotations that might not be clear from the straight explanation.
+    `,
+    ],
+  },
   {
     mnemonic: "th",
     fullName: "Thesaurus",
@@ -55,6 +69,7 @@ const builtinsWithoutUuids: ChitchatWithoutUuid[] = [
 const builtins: Chitchat[] = builtinsWithoutUuids.map((chitchat) => {
   return {
     ...chitchat,
+    promptChain: chitchat.promptChain.map((s) => s.trim()),
     uuid: crypto.randomUUID(),
   };
 });
