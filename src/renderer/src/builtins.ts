@@ -64,6 +64,16 @@ const builtinsWithoutUuids: ChitchatWithoutUuid[] = [
       `Write a haiku based on the thoughts above. Avoid words that are too similar to "%s".`,
     ],
   },
+  {
+    mnemonic: "fix",
+    fullName: "Fix",
+    description:
+      "Fix a sentence or paragraph (recommended with system service)",
+    model: ModelName.Gpt35Turbo,
+    promptChain: [
+      "Fix any typos, spelling errors or grammar errors in the following text. Include only the repaired text, and nothing else:\n%s",
+    ],
+  },
 ];
 
 const builtins: Chitchat[] = builtinsWithoutUuids.map((chitchat) => {

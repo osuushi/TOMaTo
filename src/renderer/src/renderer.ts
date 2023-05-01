@@ -7,6 +7,8 @@ import {
 } from "./nav";
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
+import { endServiceMode, getServiceMode, initMacosService } from "./service";
+import { ServiceInvocationCanceledSentinel } from "../../shared/constants";
 
 export function init(): void {
   window.addEventListener("DOMContentLoaded", () => {
@@ -20,6 +22,7 @@ function start(): void {
   setupSearch();
   setupChat();
   initEnforcerLoop();
+  initMacosService();
 }
 
 function bindKeys() {
@@ -28,6 +31,7 @@ function bindKeys() {
     const searchInput = document.querySelector(
       "#search-input"
     ) as HTMLInputElement;
+
     const outputScreen = document.querySelector(".output-screen");
     const editor = document.querySelector(".chitchat-editor");
     const hideOutput = () => {
@@ -60,7 +64,10 @@ function bindKeys() {
         renderSearch();
         return;
       }
-
+      // If we're in service mode, cancel it now
+      if (getServiceMode()) {
+        endServiceMode(ServiceInvocationCanceledSentinel);
+      }
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send("hide");
     } else if (e.key == "Enter") {
@@ -77,7 +84,18 @@ function bindKeys() {
             electron.ipcRenderer.send("copy", selectedOption.value);
           }
         }
-
+        if (getServiceMode()) {
+          // If there's an output box, send the raw output out and hide
+          const outputEl = document.querySelector(
+            ".output"
+          ) as HTMLElement | null;
+          if (outputEl) {
+            const result = outputEl.dataset.rawOutput!;
+            endServiceMode(result);
+            // @ts-ignore (define in dts)
+            electron.ipcRenderer.send("hide");
+          }
+        }
         hideOutput();
         searchInput.focus();
         return;
