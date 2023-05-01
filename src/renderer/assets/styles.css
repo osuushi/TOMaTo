@@ -104,7 +104,8 @@ body {
 }
 
 .chat-content {
-  flex-grow: 1
+  flex-grow: 1;
+  word-wrap: wrap;
 }
 
 .chat-message.live {
@@ -124,6 +125,15 @@ body {
 }
 
 .chat-message.assistant {}
+
+.chat-content code {
+  display: block;
+  background-color: lightgray;
+  font-family: monospace;
+  white-space: pre-wrap;
+  padding: 10px;
+  margin: 5px 0;
+}
 
 #search {
   position: relative;
