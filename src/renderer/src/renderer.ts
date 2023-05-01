@@ -85,8 +85,14 @@ function bindKeys() {
           // Check if there's a selected option
           const selectedOption = select.options[select.selectedIndex];
           if (selectedOption) {
-            // @ts-ignore (define in dts)
-            electron.ipcRenderer.send("copy", selectedOption.value);
+            if (getServiceMode()) {
+              endServiceMode(selectedOption.value);
+              // @ts-ignore (define in dts)
+              electron.ipcRenderer.send("hide");
+            } else {
+              // @ts-ignore (define in dts)
+              electron.ipcRenderer.send("copy", selectedOption.value);
+            }
           }
         }
         if (getServiceMode()) {
