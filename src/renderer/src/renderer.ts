@@ -7,6 +7,8 @@ import {
 } from "./nav";
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
+import { endServiceMode, getServiceMode, initMacosService } from "./service";
+import { ServiceInvocationCanceledSentinel } from "../../shared/constants";
 
 export function init(): void {
   window.addEventListener("DOMContentLoaded", () => {
@@ -20,6 +22,7 @@ function start(): void {
   setupSearch();
   setupChat();
   initEnforcerLoop();
+  initMacosService();
 }
 
 function bindKeys() {
@@ -28,6 +31,7 @@ function bindKeys() {
     const searchInput = document.querySelector(
       "#search-input"
     ) as HTMLInputElement;
+
     const outputScreen = document.querySelector(".output-screen");
     const editor = document.querySelector(".chitchat-editor");
     const hideOutput = () => {
@@ -45,6 +49,15 @@ function bindKeys() {
       // If there's an output, hide it and the screen
       if (outputScreen) {
         hideOutput();
+        // If we're in service mode, cancel it now
+        if (getServiceMode()) {
+          endServiceMode(ServiceInvocationCanceledSentinel);
+          searchInput.value = "";
+          renderSearch();
+          // Hide
+          // @ts-ignore (define in dts)
+          electron.ipcRenderer.send("hide");
+        }
         return;
       }
 
@@ -60,7 +73,6 @@ function bindKeys() {
         renderSearch();
         return;
       }
-
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send("hide");
     } else if (e.key == "Enter") {
@@ -73,11 +85,28 @@ function bindKeys() {
           // Check if there's a selected option
           const selectedOption = select.options[select.selectedIndex];
           if (selectedOption) {
-            // @ts-ignore (define in dts)
-            electron.ipcRenderer.send("copy", selectedOption.value);
+            if (getServiceMode()) {
+              endServiceMode(selectedOption.value);
+              // @ts-ignore (define in dts)
+              electron.ipcRenderer.send("hide");
+            } else {
+              // @ts-ignore (define in dts)
+              electron.ipcRenderer.send("copy", selectedOption.value);
+            }
           }
         }
-
+        if (getServiceMode()) {
+          // If there's an output box, send the raw output out and hide
+          const outputEl = document.querySelector(
+            ".output"
+          ) as HTMLElement | null;
+          if (outputEl) {
+            const result = outputEl.dataset.rawOutput!;
+            endServiceMode(result);
+            // @ts-ignore (define in dts)
+            electron.ipcRenderer.send("hide");
+          }
+        }
         hideOutput();
         searchInput.focus();
         return;

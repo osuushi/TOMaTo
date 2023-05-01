@@ -11,6 +11,8 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 import Store from "electron-store";
 import { View } from "../shared/views";
+import { monitorServiceInputFile } from "./service";
+import { spawnSync } from "child_process";
 
 Store.initRenderer();
 const store = new Store();
@@ -76,6 +78,10 @@ app.whenReady().then(() => {
   updateGlobalShortcuts();
 
   if (store.get("hideDockIcon") as boolean) app.dock.hide();
+  // Monitor the input file for the service
+  monitorServiceInputFile().catch((e) => {
+    console.error("Error monitoring service input file", e);
+  });
 });
 
 function updateGlobalShortcuts() {
@@ -146,6 +152,14 @@ app.on("before-quit", () => {
 let currentView: View = View.Search;
 ipcMain.on("set-view", (_, view) => {
   currentView = view;
+});
+
+ipcMain.on("open-workflows", () => {
+  const resourcePath = process.resourcesPath;
+  // shell.openPath doesn't work for this bundle directory, so we'll shell out instead with bash
+  const workflowsPath = [join(resourcePath, "workflows")];
+  console.log("Opening workflows directory", workflowsPath);
+  spawnSync("open", workflowsPath);
 });
 
 // Polling loop to hide the window if the app is not active

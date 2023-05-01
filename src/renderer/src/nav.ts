@@ -1,5 +1,5 @@
 import { renderSearch } from "./search";
-import { renderSettings } from "./settings";
+import { initSettings } from "./settings";
 import { renderChat } from "./chat";
 import { View } from "../../shared/views";
 
@@ -38,7 +38,7 @@ export function activateChat() {
 
 export function activateSettings() {
   setActive(View.Settings);
-  renderSettings();
+  initSettings();
 }
 
 export function activateLastView() {

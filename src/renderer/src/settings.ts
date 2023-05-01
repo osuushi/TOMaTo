@@ -1,4 +1,4 @@
-export function renderSettings() {
+export function initSettings() {
   const openAiAPIKey = window.storeGet("openAiAPIKey") || "";
   const openAiAPIKeyInput = document.querySelector(
     "#openai-key"
@@ -19,6 +19,11 @@ export function renderSettings() {
   ) as HTMLInputElement;
   hideDockIconInput.checked = hideDockIcon;
   hideDockIconInput.addEventListener("change", updateHideDockIcon);
+
+  const installServiceButton = document.querySelector(
+    "#service-button"
+  ) as HTMLButtonElement;
+  installServiceButton.addEventListener("click", installService);
 }
 
 function updateOpenAiAPIKey() {
@@ -53,4 +58,7 @@ function updateHideDockIcon() {
   window.storeSet("hideDockIcon", hideDockIconInput.checked);
   // @ts-ignore (define in dts)
   electron.ipcRenderer.send("update-hide-dock-icon");
+}
+function installService() {
+  electron.ipcRenderer.send("open-workflows");
 }

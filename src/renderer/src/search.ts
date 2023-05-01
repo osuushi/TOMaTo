@@ -2,15 +2,14 @@ import { filteredChitChats, wrapChitChats } from "./chitchat_view";
 import { onGlobalEvent } from "./globalEvents";
 import { executeChitChat } from "./chitchat";
 import { renderOutputHtml } from "./output_parser";
+import { getServiceInput, getServiceMode } from "./service";
 
 export function setupSearch() {
   onGlobalEvent("chitchats-updated", () => {
     renderSearch();
   });
 
-  const searchInput = document.querySelector(
-    "#search-input"
-  )! as HTMLInputElement;
+  const searchInput = getSearchInput();
   searchInput.addEventListener("input", () => {
     renderSearch();
   });
@@ -41,6 +40,7 @@ export function setupSearch() {
           document.body.appendChild(outputScreen);
           const outputBox = document.createElement("div");
           outputBox.classList.add("output");
+          outputBox.dataset.rawOutput = result;
           outputBox.innerHTML = renderOutputHtml(result);
           document.body.appendChild(outputBox);
           // If there's a select, focus it
@@ -60,6 +60,10 @@ export function setupSearch() {
   });
 
   renderSearch();
+}
+
+export function getSearchInput(): HTMLInputElement {
+  return document.querySelector("#search-input")! as HTMLInputElement;
 }
 
 export function renderSearch() {
@@ -88,6 +92,11 @@ function getQuery(): string {
 }
 
 function getSubQuery(): string {
+  // If we're in service mode, the query is the service input
+  if (getServiceMode()) {
+    return getServiceInput();
+  }
+
   const query = getQuery();
   const words = query.split(" ");
   words.shift();
