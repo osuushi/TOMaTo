@@ -58,27 +58,72 @@ body {
 .chat-view {
   box-sizing: border-box;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #F9F9F9;
+  color: black;
+  padding: 0
+    /* Madeline's color */
+    /* color: rgb(43, 102, 128) */
+}
+
+.chat-title {
+  margin: 0;
+  padding: 10px;
+  background-image: linear-gradient(to right, lightblue, white);
+  border-bottom: 1px solid black;
+}
+
+#chat-input {
+  margin: 10px 0 10px 0;
 }
 
 #chat-messages {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  margin-right: 30px;
+  margin: 0;
+  align-items: stretch;
+  overflow-y: auto;
+  padding: 10px 30px 0 30px;
 }
 
 .chat-message {
-  display: flex;
   margin-bottom: 10px;
+  display: flex;
+  padding: 15px 10px 0 10px;
+  border-radius: 10px;
+}
+
+.author-id {
+  width: 30px;
+  position: relative;
+  top: -9px;
+  font-size: 26px;
+  margin-right: 5px;
+}
+
+.chat-content {
+  flex-grow: 1
+}
+
+.chat-message.live {
+  display: none;
+}
+
+.chat-message.live.loading {
+  display: flex;
+}
+
+.chat-content p:first-child {
+  display: inline;
 }
 
 .chat-message.user {
-  justify-content: flex-end;
+  background-image: linear-gradient(#6aa4f5, #abd5f8);
 }
 
-.chat-message.assistant {
-  justify-content: flex-start;
-}
+.chat-message.assistant {}
 
 #search {
   position: relative;
@@ -109,7 +154,7 @@ body {
   padding: 10px;
 }
 
-.settings-view > div {
+.settings-view>div {
   margin: 10px;
 }
 
@@ -205,12 +250,10 @@ cycling over the entire window */
   width: 100vw;
   height: 100vh;
   mix-blend-mode: screen;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 196, 0, 1),
-    rgba(0, 0, 0, 1),
-    rgba(255, 196, 0, 1)
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 196, 0, 1),
+      rgba(0, 0, 0, 1),
+      rgba(255, 196, 0, 1));
   background-repeat: repeat-x;
   /* Smooth animation as defined below */
   animation: loading 1s infinite linear;
@@ -242,18 +285,18 @@ cycling over the entire window */
   box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.5);
 }
 
-.chitchat-editor > div {
+.chitchat-editor>div {
   margin: 5px;
   margin-bottom: 20px;
   flex-grow: 0;
 }
 
-.chitchat-editor > div.one-field {
+.chitchat-editor>div.one-field {
   display: flex;
   flex-direction: row;
 }
 
-.chitchat-editor > div.one-field > input {
+.chitchat-editor>div.one-field>input {
   flex-grow: 1;
   margin-left: 5px;
 }
@@ -264,7 +307,7 @@ cycling over the entire window */
   position: relative;
 }
 
-.description-container > p {
+.description-container>p {
   font-size: 12px;
 }
 

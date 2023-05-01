@@ -1,10 +1,17 @@
 import { ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum } from "openai";
-import { getApiKey } from "./openai";
-import { ModelName } from "../../shared/storage";
+import { getApiKey } from "./openai"
+import { ModelName } from "../../shared/storage"
 import { OpenAI as OpenAIStream } from 'openai-streams'
-import { yieldStream } from "yield-stream";
+import { yieldStream } from "yield-stream"
+import { marked } from 'marked'
 
 let instance: ChatView
+
+type ChatMessage = {
+  html?: string,
+  hidden?: boolean,
+  message: ChatCompletionRequestMessage,
+}
 
 export function setupChat() {
   instance = new ChatView()
@@ -14,10 +21,23 @@ export function renderChat() {
   instance.render()
 }
 
-const liveMessage = '<div class="chat-message agent live"></div>'
-
 export class ChatView {
-  messages: ChatCompletionRequestMessage[] = []
+  messages: ChatMessage[] = [
+    {
+      message: {
+        role: ChatCompletionRequestMessageRoleEnum.User,
+        content: "You are ChatGPT, a helpful and friendly AI, you will answer questions from a human.  Answer consisely and format your answers with markdown, unless instructed otherwise.",
+      },
+      hidden: true,
+    },
+    {
+      message: {
+        role: ChatCompletionRequestMessageRoleEnum.Assistant,
+        content: "Okay, I'm ready to answer questions.",
+      },
+      hidden: true,
+    },
+  ]
 
   get sendButton(): HTMLButtonElement {
     return document.querySelector('#chat-input-send') as HTMLButtonElement
@@ -47,15 +67,19 @@ export class ChatView {
 
   addUserMessage(message: string) {
     this.messages.push({
-      content: message,
-      role: ChatCompletionRequestMessageRoleEnum.User
+      message: {
+        content: message,
+        role: ChatCompletionRequestMessageRoleEnum.User
+      }
     })
   }
 
   addAIResponse(message: string) {
     this.messages.push({
-      content: message,
-      role: ChatCompletionRequestMessageRoleEnum.Assistant
+      message: {
+        content: message,
+        role: ChatCompletionRequestMessageRoleEnum.Assistant
+      }
     })
   }
 
@@ -65,7 +89,7 @@ export class ChatView {
     this.input.value = ''
 
     const stream = await OpenAIStream("chat", {
-      messages: this.messages,
+      messages: this.messages.map(chat => chat.message),
       model: ModelName.Gpt35Turbo,
     }, {
       // I'll fix this later I guess
@@ -75,7 +99,7 @@ export class ChatView {
     const generator = yieldStream(stream)
 
     const setResponse = (val) => {
-      this.liveMessage.textContent = val
+      this.liveMessageContent.innerHTML = marked.parse(val)
     }
 
     this.setLiveLoading(true);
@@ -103,8 +127,12 @@ export class ChatView {
     }
   }
 
+  get liveMessageContent() {
+    return document.querySelector('#chat-messages .chat-message.live .chat-content') as HTMLDivElement
+  }
+
   get liveMessage(): HTMLDivElement {
-    return document.querySelector('#chat-messages .chat-message.agent.live') as HTMLDivElement
+    return document.querySelector('#chat-messages .chat-message.live') as HTMLDivElement
   }
 
   get messagesDiv(): HTMLDivElement {
@@ -112,11 +140,25 @@ export class ChatView {
   }
 
   renderMessages() {
-    this.messagesDiv.innerHTML = this.messages.map(this.renderMessage).join('') + liveMessage
+    const liveHTML = this.renderMessage({ message: { content: '', role: ChatCompletionRequestMessageRoleEnum.Assistant } }, true)
+    this.messagesDiv.innerHTML = this.messages.map(msg => this.renderMessage(msg, false)).join('') + liveHTML;
   }
 
-  renderMessage(message: ChatCompletionRequestMessage) {
-    return `<div class="chat-message ${message.role}">${message.role === ChatCompletionRequestMessageRoleEnum.User ? "You" : "ChatGPT"}: ${message.content}</div>`
+  renderMessage(chat: ChatMessage, isLive: boolean = false) {
+    if (chat.hidden) {
+      return ''
+    }
+
+    if (!chat.html) {
+      let html = `
+        <div class="chat-message ${chat.message.role} ${isLive ? "live" : ""}">
+          <div class="author-id">${chat.message.role === ChatCompletionRequestMessageRoleEnum.User ? "👤" : "🤖"}</div>
+          <div class="chat-content">${marked.parse(chat.message.content)}</div>
+        </div>`
+      chat.html = html
+    }
+
+    return chat.html
   }
 
   render() {
