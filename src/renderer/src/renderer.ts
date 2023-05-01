@@ -49,6 +49,15 @@ function bindKeys() {
       // If there's an output, hide it and the screen
       if (outputScreen) {
         hideOutput();
+        // If we're in service mode, cancel it now
+        if (getServiceMode()) {
+          endServiceMode(ServiceInvocationCanceledSentinel);
+          searchInput.value = "";
+          renderSearch();
+          // Hide
+          // @ts-ignore (define in dts)
+          electron.ipcRenderer.send("hide");
+        }
         return;
       }
 
@@ -63,10 +72,6 @@ function bindKeys() {
         searchInput.focus();
         renderSearch();
         return;
-      }
-      // If we're in service mode, cancel it now
-      if (getServiceMode()) {
-        endServiceMode(ServiceInvocationCanceledSentinel);
       }
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send("hide");
