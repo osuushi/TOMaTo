@@ -67,6 +67,25 @@ Click save, then type in a math problem after our `mth` mnemonic, and:
 
 Side note: This particular chitchat is slow and expensive, since it uses GPT-4. It's also not particularly reliable, even with GPT-4. That's why this isn't a built-in.
 
+## System Service
+
+In addition to prompting within the TOMaTo app, you can also use TOMaTo as a system service. This allows you to select and replace text in (almost) any app with the output of a chitchat. You can set this up by going to the settings tab in TOMaTo and clicking the "Install Service" button, then opening tomato.workflow in the Finder. macOS should prompt you about installing the workflow, and then take you to the system settings so that you can bind it to a key.
+
+To use the service, select some text in any app, then either:
+
+- Hit the key you bound above
+- Select "tomato" from the "Services" menu under the Apple menu, or
+- Right click and select "tomato" from the "Services" submenu
+
+TOMaTo will pop up, and you can search for the chitchat you want to apply. Just
+select the subservice in this case. Your query will be the selected text.
+
+The LLM will do its work and show you the output. Hit enter, and the output will
+replace your selected text. Or hit escape to cancel out.
+
+A great chitchat to use this on is "fix". ChatGPT is fantastic at fixing typos
+and grammar/spelling errors, and can easily fix an entire paragraph at once.
+
 ## Requirements
 
 - Mac OS 10.13 or later
@@ -105,7 +124,12 @@ The built app will be found at dist/mac-universal/tomato.app
 
 - [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 
-### Project Setup
+### System Service development.
+
+To test changes to system service mode when using `npm run dev`, you need to
+install and use the tomato-dev.workflow service. This is the same workflow as
+the production system service, except that it will activate the dev electron
+app.
 
 ### Other platforms
 
