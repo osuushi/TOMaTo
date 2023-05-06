@@ -8,7 +8,6 @@ import {
 } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
-import icon from "../../resources/icon.png?asset";
 import Store from "electron-store";
 import { View } from "../shared/views";
 import { monitorServiceInputFile } from "./service";
@@ -24,7 +23,6 @@ function createWindow(): void {
     show: false,
     closable: process.platform !== "darwin",
     autoHideMenuBar: true,
-    ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
       nodeIntegration: true,
       preload: join(__dirname, "../preload/index.js"),
