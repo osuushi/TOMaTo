@@ -10,19 +10,23 @@ function delay(ms: number): Promise<void> {
 
 export async function monitorServiceInputFile() {
   while (true) {
-    if (!fs.existsSync(serviceTempInputFile)) {
-      await delay(100);
-      continue;
-    }
-    const input = fs.readFileSync(serviceTempInputFile, "utf8");
-    console.log("Got service input", input);
-    fs.unlinkSync(serviceTempInputFile);
-    const result = await sendServiceInput(input);
-    if (result == ServiceInvocationCanceledSentinel) {
-      // Just echo the input if canceled so no change happens
-      fs.writeFileSync(serviceTempOutputFile, input);
-    } else {
-      fs.writeFileSync(serviceTempOutputFile, result);
+    try {
+      if (!fs.existsSync(serviceTempInputFile)) {
+        await delay(100);
+        continue;
+      }
+      const input = fs.readFileSync(serviceTempInputFile, "utf8");
+      console.log("Got service input", input);
+      fs.unlinkSync(serviceTempInputFile);
+      const result = await sendServiceInput(input);
+      if (result == ServiceInvocationCanceledSentinel) {
+        // Just echo the input if canceled so no change happens
+        fs.writeFileSync(serviceTempOutputFile, input);
+      } else {
+        fs.writeFileSync(serviceTempOutputFile, result);
+      }
+    } catch (e) {
+      console.error("Error handling service input", e);
     }
   }
 }
