@@ -1,3 +1,7 @@
+:root {
+  --subtle-boundary: #a4c69b;
+}
+
 body {
   box-sizing: border-box;
   display: flex;
@@ -19,7 +23,7 @@ body {
   width: 40px;
   height: 100vh;
   background-color: #eeffe8;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid var(--subtle-boundary);
 }
 
 #nav button {
@@ -28,6 +32,8 @@ body {
   width: 40px;
   height: 40px;
   font-size: 18px;
+  color: #538180;
+  cursor: pointer;
 }
 
 #nav button.active {
@@ -98,7 +104,7 @@ body {
   width: 100%;
   height: 40px;
   border: none;
-  border-bottom: 1px solid #186700;
+  border-bottom: 1px solid var(--subtle-boundary);
   font-size: 18px;
   padding: 0 10px;
   box-sizing: border-box;
@@ -133,9 +139,20 @@ body {
 }
 
 .chitchat {
+  display: flex;
+  flex-direction: row;
   padding: 8px;
   position: relative;
-  border-bottom: 1px solid #186700;
+  border-bottom: 1px solid var(--subtle-boundary);
+}
+
+.chitchat-info {
+  margin-right: 10px;
+}
+
+.chitchat-buttons {
+  flex-grow: 1;
+  text-align: right;
 }
 
 .chitchat .mnemonic {
@@ -272,4 +289,15 @@ cycling over the entire window */
   width: 100%;
   min-height: 200px;
   margin-bottom: 10px;
+}
+
+.chitchat-buttons button {
+  color: #68957c;
+  font-size: 22px;
+  line-height: 44px;
+  cursor: pointer;
+}
+
+.chitchat-buttons button:hover {
+  color: #83cfce;
 }

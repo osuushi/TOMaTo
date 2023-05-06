@@ -16,15 +16,17 @@ class ChitchatWrapper {
     const description = htmlEscape(this.chitchat.description);
     return `
       <div class="chitchat">
-        <div class="chitchat-header">
-          <span class="mnemonic">${mnemonic}</span>
-          <span class="full-name">${fullName}</span>
+        <div class="chitchat-info">
+          <div class="chitchat-header">
+            <span class="mnemonic">${mnemonic}</span>
+            <span class="full-name">${fullName}</span>
+          </div>
+          <div class="chitchat-description">${description}</div>
         </div>
-        <div class="chitchat-description">${description}</div>
         <div class="chitchat-buttons">
-          <button class="chitchat-edit" title="Edit">✏️</button>
-          <button class="chitchat-duplicate" title="Duplicate">📑</button>
-          <button class="chitchat-delete" title="Delete">🚫</button>
+          <button class="chitchat-edit" title="Edit"><i class="icofont-edit"></i></button>
+          <button class="chitchat-duplicate" title="Duplicate"><i class="icofont-ui-copy"></i></button>
+          <button class="chitchat-delete" title="Delete"><i class="icofont-ui-delete"></i></button>
         </div>
       </div>
     `;

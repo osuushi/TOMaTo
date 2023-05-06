@@ -9,21 +9,22 @@
     content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.openai.com ws://localhost:5173;" />
 
   <link href="./assets/styles.css" type="text/css" rel="stylesheet" />
+  <link href="./icofont/icofont.min.css" type="text/css" rel="stylesheet" />
 </head>
 
 <body>
   <!-- Flexbox with small nav on the left and main content on the right -->
   <div id="nav">
-    <button id="nav-search" class="active">▶️</button>
-    <button id="nav-chat">💬</button>
-    <button id="nav-settings">⚙️</button>
+    <button id="nav-search" class="active"><i class="icofont-ui-play"></i></button>
+    <button id="nav-chat"><i class="icofont-chat"></i></button>
+    <button id="nav-settings"><i class="icofont-ui-settings"></i></button>
   </div>
   <div id="content">
     <div class="main-view search-view active">
       <!-- Search bar -->
       <div id="search">
         <div id="search-bar">
-          <div>🔍</div><input type="text" id="search-input" placeholder="Search..." spellcheck="false" />
+          <input type="text" id="search-input" placeholder="Search..." spellcheck="false" />
         </div>
         <div id="search-results"></div>
       </div>
