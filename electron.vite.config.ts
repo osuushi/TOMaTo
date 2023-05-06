@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 
 export default defineConfig({
@@ -7,5 +8,7 @@ export default defineConfig({
   preload: {
     plugins: [externalizeDepsPlugin()],
   },
-  renderer: {},
+  renderer: {
+    publicDir: resolve("./src/renderer/public"),
+  },
 });
