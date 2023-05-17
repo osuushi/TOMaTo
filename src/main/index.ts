@@ -5,6 +5,7 @@ import {
   ipcMain,
   globalShortcut,
   clipboard,
+  utilityProcess,
 } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
@@ -12,6 +13,7 @@ import Store from "electron-store";
 import { View } from "../shared/views";
 import { monitorServiceInputFile } from "./service";
 import { spawnSync } from "child_process";
+import { runCalculation } from "./calculator";
 
 Store.initRenderer();
 const store = new Store();
@@ -158,6 +160,18 @@ ipcMain.on("open-workflows", () => {
   const workflowsPath = [join(resourcePath, "workflows")];
   console.log("Opening workflows directory", workflowsPath);
   spawnSync("open", workflowsPath);
+});
+
+ipcMain.on("run-calculation", async (_, code): Promise<void> => {
+  try {
+    const result = await runCalculation(code);
+    BrowserWindow.getFocusedWindow()?.webContents.send(
+      "calculation-result",
+      result
+    );
+  } catch (e) {
+    BrowserWindow.getFocusedWindow()?.webContents.send("calculation-error", e);
+  }
 });
 
 // Polling loop to hide the window if the app is not active
