@@ -2,13 +2,15 @@ import { renderSearch } from "./search";
 import { initSettings } from "./settings";
 import { renderChat } from "./chat";
 import { View } from "../../shared/views";
+import { renderCalculator } from "./calculator";
 
 let lastView = View.Search;
 
-// Mapings of views to activate functions
+// Mappings of views to activate functions
 const VIEW_ACTIVATORS = {
   [View.Search]: activateSearch,
   [View.Chat]: activateChat,
+  [View.Calculator]: activateCalculator,
   [View.Settings]: activateSettings,
 };
 
@@ -17,13 +19,14 @@ export function currentView(): View {
 }
 
 export function setupNav() {
-  document
-    .querySelector("#nav-search")!
-    .addEventListener("click", activateSearch);
-  document
-    .querySelector("#nav-settings")!
-    .addEventListener("click", activateSettings);
-  document.querySelector("#nav-chat")!.addEventListener("click", activateChat);
+  // Let's refactor the above. We can just use the keys of VIEW_ACTIVATORS
+  Object.keys(VIEW_ACTIVATORS).forEach((viewName: string) => {
+    document
+      .querySelector(`#nav-${viewName}`)!
+      .addEventListener("click", () => {
+        VIEW_ACTIVATORS[viewName]();
+      });
+  });
 }
 
 export function activateSearch() {
@@ -34,6 +37,11 @@ export function activateSearch() {
 export function activateChat() {
   setActive(View.Chat);
   renderChat();
+}
+
+export function activateCalculator() {
+  setActive(View.Calculator);
+  renderCalculator();
 }
 
 export function activateSettings() {

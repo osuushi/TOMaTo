@@ -4,6 +4,7 @@ import {
   activateSearch,
   activateSettings,
   activateLastView,
+  activateCalculator,
 } from "./nav";
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
@@ -125,6 +126,8 @@ function bindKeys() {
     } else if (e.key === "2" && (e.metaKey || e.ctrlKey)) {
       activateChat();
     } else if (e.key === "3" && (e.metaKey || e.ctrlKey)) {
+      activateCalculator();
+    } else if (e.key === "4" && (e.metaKey || e.ctrlKey)) {
       activateSettings();
     }
   });
