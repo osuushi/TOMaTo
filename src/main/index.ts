@@ -162,16 +162,8 @@ ipcMain.on("open-workflows", () => {
   spawnSync("open", workflowsPath);
 });
 
-ipcMain.on("run-calculation", async (_, code): Promise<void> => {
-  try {
-    const result = await runCalculation(code);
-    BrowserWindow.getFocusedWindow()?.webContents.send(
-      "calculation-result",
-      result
-    );
-  } catch (e) {
-    BrowserWindow.getFocusedWindow()?.webContents.send("calculation-error", e);
-  }
+ipcMain.handle("run-calculation", async (_, code): Promise<string> => {
+  return await runCalculation(code);
 });
 
 // Polling loop to hide the window if the app is not active

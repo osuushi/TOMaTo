@@ -6,7 +6,7 @@ import {
 import { Chitchat } from "../../shared/storage";
 import { FAKE_CHITCHAT } from "./flags";
 import { getClient } from "./openai";
-import dedent from "dedent";
+import { dedent } from "ts-dedent";
 
 let executeChitChat: (chitchat: Chitchat, query: string) => Promise<string>;
 

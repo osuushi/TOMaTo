@@ -301,3 +301,37 @@ cycling over the entire window */
 .chitchat-buttons button:hover {
   color: #83cfce;
 }
+
+#calc {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+#calc-input {
+  box-sizing: border-box;
+  font-size: 18px;
+  padding: 0 10px;
+  width: 100%;
+  padding: 10px;
+  flex-grow: 0;
+}
+
+#calc-result {
+  box-sizing: border-box;
+  min-height: 40px;
+  margin: 4px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color:#eeffff;
+  color:rgb(61, 61, 61);
+  white-space: pre-wrap;
+  flex-grow: 1;
+  font-size: 18pt;
+}
+
+#calc-result.error {
+  background-color: #ffcccc;
+  color: #af0000;
+}

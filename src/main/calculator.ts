@@ -1,4 +1,4 @@
-import dedent from "dedent";
+import { dedent } from "ts-dedent";
 import { utilityProcess } from "electron";
 import os from "os";
 import { unlink, writeFile } from "fs/promises";
@@ -13,6 +13,7 @@ interface ChildMessage {
 export const runCalculation = async (code: string): Promise<string> => {
   // First, we need to wrap the code in the sandbox environment
   const wrappedCode = wrapCode(code);
+  console.log("Wrapped code", wrappedCode);
   const tempFile = await createTempFile(wrappedCode);
   const child = utilityProcess.fork(tempFile, [], {
     env: {},
@@ -46,12 +47,13 @@ export const runCalculation = async (code: string): Promise<string> => {
 const wrapCode = (code: string): string => {
   // We'll JSON encode the code so that we can safely embed it in the sandbox
   const encodedCode = JSON.stringify(code);
+  console.log("Encoded code:\n", encodedCode);
   return dedent`
     const vm = require("vm");
     const code = ${encodedCode};
 
     const sendMessageData = (obj) => {
-      process.postMessage(JSON.stringify(obj));
+      process.parentPort.postMessage(JSON.stringify(obj));
     }
 
     try {

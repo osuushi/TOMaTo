@@ -10,6 +10,7 @@ import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
 import { endServiceMode, getServiceMode, initMacosService } from "./service";
 import { ServiceInvocationCanceledSentinel } from "../../shared/constants";
+import { setupCalculator } from "./calculator";
 
 export function init(): void {
   window.addEventListener("DOMContentLoaded", () => {
@@ -22,6 +23,7 @@ function start(): void {
   setupNav();
   setupSearch();
   setupChat();
+  setupCalculator();
   initEnforcerLoop();
   initMacosService();
 }
