@@ -1,6 +1,6 @@
 # TOMaTo
 
-![tomato image](./resources/icon.png)
+![tomato image](./build/icon.png)
 
 TOMaTo is a quick access frontend for ChatGPT which makes it easy to create
 simple prompt chains based on user input, known as "chitchats".
