@@ -198,8 +198,9 @@ ipcMain.handle("dump-js", async (_, code): Promise<void> => {
 });
 
 // Polling loop to hide the window if the app is not active
+const HIDE_VIEWS = [View.Search, View.Calculator];
 setInterval(() => {
-  if (currentView !== View.Search) return;
+  if (!HIDE_VIEWS.includes(currentView)) return;
 
   const mainWindow = BrowserWindow.getAllWindows()[0];
   if (mainWindow && !mainWindow.isFocused()) {
