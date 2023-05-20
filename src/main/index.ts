@@ -17,11 +17,6 @@ import Prism from "prismjs";
 import { writeFile, readFile } from "fs/promises";
 import prismCssPath from "../../resources/prism.css.txt?asset&asarUnpack";
 
-// Write the prismCSSPath to /tmp/prismpath.txt
-(async () => {
-  await writeFile("/tmp/prismpath.txt", prismCssPath);
-})();
-
 Store.initRenderer();
 const store = new Store();
 function createWindow(): void {
