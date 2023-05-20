@@ -1,5 +1,4 @@
 import { renderSearch } from "./search";
-import { initSettings } from "./settings";
 import { renderChat } from "./chat";
 import { View } from "../../shared/views";
 import { renderCalculator } from "./calculator";
