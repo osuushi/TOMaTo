@@ -10,11 +10,16 @@ export function renderCalculator() {
 }
 
 let isCalculating = false;
+let lastSource = "";
 export function setupCalculator() {
   const inputEl = getCalcInput();
   const modelSwitchEl = document.querySelector(
     "#calc-model-switch"
   ) as HTMLInputElement;
+  const viewSourceEl = document.querySelector(
+    "#calc-source"
+  ) as HTMLButtonElement;
+  viewSourceEl.style.display = "none";
   modelSwitchEl.checked = window.storeGet("calculatorModel") === ModelName.Gpt4;
   inputEl.addEventListener("keydown", (e) => {
     // If enter key is pressed, handle the input
@@ -26,6 +31,10 @@ export function setupCalculator() {
       isCalculating = true;
       calculate();
     }
+  });
+
+  viewSourceEl.addEventListener("click", () => {
+    electron.ipcRenderer.invoke("dump-js", lastSource);
   });
 
   modelSwitchEl.addEventListener("change", () => {
@@ -53,7 +62,11 @@ async function calculate(): Promise<void> {
   document.body.appendChild(loadingOverlay);
   try {
     let code = await generateCode(inputValue);
-
+    lastSource = code;
+    const sourceButton = document.querySelector(
+      "#calc-source"
+    ) as HTMLButtonElement;
+    sourceButton.style.display = "block";
     const result = await electron.ipcRenderer.invoke("run-calculation", code);
     outputEl.classList.remove("error");
     outputEl.textContent = result;

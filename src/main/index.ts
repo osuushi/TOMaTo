@@ -5,15 +5,17 @@ import {
   ipcMain,
   globalShortcut,
   clipboard,
-  utilityProcess,
 } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import Store from "electron-store";
 import { View } from "../shared/views";
 import { monitorServiceInputFile } from "./service";
-import { spawnSync } from "child_process";
+import { spawnSync, spawn } from "child_process";
 import { runCalculation } from "./calculator";
+import Prism from "prismjs";
+import { writeFile, readFile } from "fs/promises";
+import prismCssPath from "../../build/prism.css.txt?asset";
 
 Store.initRenderer();
 const store = new Store();
@@ -164,6 +166,35 @@ ipcMain.on("open-workflows", () => {
 
 ipcMain.handle("run-calculation", async (_, code): Promise<string> => {
   return await runCalculation(code);
+});
+
+ipcMain.handle("dump-js", async (_, code): Promise<void> => {
+  const htmlSnippet: string = Prism.highlight(
+    code,
+    Prism.languages.javascript,
+    "javascript"
+  );
+  // Load the css and put it inline
+  const css = await readFile(prismCssPath, "utf8");
+  const html = `
+    <html>
+      <head>
+        <style>
+          ${css}
+        </style>
+      </head>
+      <body>
+        <pre>${htmlSnippet}</pre>
+      </body>
+    </html>
+  `;
+
+  // Temp file
+  const tempFile = `/tmp/tomato-dump-js-${Date.now()}.html`;
+  // Write the file
+  await writeFile(tempFile, html);
+  // Open the file with qlmanage
+  spawn("qlmanage", ["-p", tempFile]);
 });
 
 // Polling loop to hide the window if the app is not active

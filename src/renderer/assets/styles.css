@@ -404,3 +404,27 @@ cycling over the entire window */
   right: 20px;
   cursor: pointer;
 }
+
+#calc-source {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  cursor: pointer;
+  border-radius: 16px;
+  height: 30px;
+  width: 120px;
+  border: none;
+  background-color: #6dd09b;
+  color: #395943;
+  opacity: 20%;
+  transition: opacity 0.2s ease;
+}
+
+#calc-source:hover {
+  opacity: 100%;
+}
+
+#calc-source:active {
+  background-color: #3aa66c;
+  color: #395943;
+}

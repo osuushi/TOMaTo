@@ -5,12 +5,13 @@ import {
   activateSettings,
   activateLastView,
   activateCalculator,
+  currentView,
 } from "./nav";
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
 import { endServiceMode, getServiceMode, initMacosService } from "./service";
 import { ServiceInvocationCanceledSentinel } from "../../shared/constants";
-import { setupCalculator } from "./calculator";
+import { getCalcInput, setupCalculator } from "./calculator";
 
 export function init(): void {
   window.addEventListener("DOMContentLoaded", () => {
@@ -49,32 +50,46 @@ function bindKeys() {
     if (e.key === "Escape") {
       e.preventDefault();
       e.stopPropagation();
-      // If there's an output, hide it and the screen
-      if (outputScreen) {
-        hideOutput();
-        // If we're in service mode, cancel it now
-        if (getServiceMode()) {
-          endServiceMode(ServiceInvocationCanceledSentinel);
-          searchInput.value = "";
-          renderSearch();
-          // Hide
-          // @ts-ignore (define in dts)
-          electron.ipcRenderer.send("hide");
+
+      switch (currentView()) {
+        case "search":
+          // If there's an output, hide it and the screen
+          if (outputScreen) {
+            hideOutput();
+            // If we're in service mode, cancel it now
+            if (getServiceMode()) {
+              endServiceMode(ServiceInvocationCanceledSentinel);
+              searchInput.value = "";
+              renderSearch();
+              // Hide
+              // @ts-ignore (define in dts)
+              electron.ipcRenderer.send("hide");
+            }
+            return;
+          }
+
+          if (editor) {
+            editor.remove();
+            return;
+          }
+
+          // If there's text in the search input, clear it
+          if (searchInput.value) {
+            searchInput.value = "";
+            searchInput.focus();
+            renderSearch();
+            return;
+          }
+          break;
+        case "calc": {
+          // If there's text in the calculator input, clear it and focus
+          const inputEl = getCalcInput();
+          if (inputEl.value) {
+            inputEl.value = "";
+            inputEl.focus();
+            return;
+          }
         }
-        return;
-      }
-
-      if (editor) {
-        editor.remove();
-        return;
-      }
-
-      // If there's text in the search input, clear it
-      if (searchInput.value) {
-        searchInput.value = "";
-        searchInput.focus();
-        renderSearch();
-        return;
       }
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send("hide");
