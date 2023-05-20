@@ -1,6 +1,6 @@
 import { ModelName } from "../../shared/storage";
 import { Chitchat } from "../../shared/storage";
-import dedent from "dedent";
+import { dedent } from "ts-dedent";
 
 type ChitchatWithoutUuid = Omit<Chitchat, "uuid">;
 

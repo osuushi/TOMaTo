@@ -17,6 +17,7 @@
   <div id="nav">
     <button id="nav-search" class="active"><i class="icofont-ui-play"></i></button>
     <button id="nav-chat"><i class="icofont-chat"></i></button>
+    <button id="nav-calc"><i class="icofont-calculator-alt-2"></i></button>
     <button id="nav-settings"><i class="icofont-ui-settings"></i></button>
   </div>
   <div id="content">
@@ -39,20 +40,45 @@
         </div>
       </div>
     </div>
+    <div class="main-view calc-view">
+      <div id="calc">
+        <div id="calc-input-row">
+          <textarea id="calc-input"></textarea>
+        </div>
+        <div id="calc-result"></div>
+        <button id="calc-source">
+          View Source
+        </button>
+        <label class="model-switch-label">
+          <input type="checkbox" id="calc-model-switch" />
+          <span class="model-switch"></span>
+        </label>
+        </div>
+    </div>
     <div class="main-view settings-view">
       <h1>Settings:</h1>
       <div>
         <label for="openai-key">
-          OpenAI API Key:
+          OpenAI API:
         </label>
         <input type="password" id="openai-key" placeholder="OpenAI API Key" />
         <small><a href="https://platform.openai.com/account/api-keys" target="_blank">Create a key</a></small>
       </div>
       <div>
-        <label for="activation-shortcut">
-          Activation Shortcut:
+        <h4>Shortcuts</h4>
+
+      <div>
+        <label for="global-search-shortcut">
+          Global Search:
         </label>
-        <input type="text" id="activation-shortcut" placeholder="e.g. CommandOrControl+Alt+Space" />
+        <input type="text" id="global-search-shortcut" placeholder="e.g. CommandOrControl+Alt+Space">
+      </div>
+      <div>
+        <label for="global-calculator-shortcut">
+          Global Calculator Shortcut:
+        </label>
+        <input type="text" id="global-calculator-shortcut" placeholder="e.g. CommandOrControl+Shift+Space">
+      </div>
         <p>
           <small>
             <a href="https://www.electronjs.org/docs/api/accelerator" target="_blank">See Electron documentation for

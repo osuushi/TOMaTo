@@ -73,6 +73,26 @@ url("./fonts/icofont.woff") format("woff");
   content: "\ec51";
 }
 
+.icofont-ui-calculator:before
+{
+  content: "\ec05";
+}
+
+.icofont-calculator:before
+{
+  content: "\ebdf";
+}
+
+.icofont-calculator-alt-2:before
+{
+  content: "\ebde";
+}
+
+.icofont-calculator-alt-1:before
+{
+  content: "\ebdd";
+}
+
 .icofont-xs
 {
   font-size: .5em;

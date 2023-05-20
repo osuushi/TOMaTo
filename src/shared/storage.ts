@@ -7,6 +7,10 @@ export const schema: Schema<any> = {
     type: "string",
     default: "",
   },
+  calculatorShortcut: {
+    type: "string",
+    default: "",
+  },
   hideDockIcon: {
     type: "boolean",
     default: false,
@@ -14,6 +18,11 @@ export const schema: Schema<any> = {
   openAiAPIKey: {
     type: "string",
     default: "",
+  },
+  calculatorModel: {
+    type: "string",
+    enum: ["gpt-3.5-turbo", "gpt-4"],
+    default: "gpt-3.5-turbo",
   },
   chitchats: {
     type: "array",

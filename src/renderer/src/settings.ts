@@ -6,12 +6,8 @@ export function initSettings() {
   openAiAPIKeyInput.value = openAiAPIKey;
   openAiAPIKeyInput.addEventListener("change", updateOpenAiAPIKey);
 
-  const activationShortcut = window.storeGet("activationShortcut") || "";
-  const activationShortcutInput = document.querySelector(
-    "#activation-shortcut"
-  ) as HTMLInputElement;
-  activationShortcutInput.value = activationShortcut;
-  activationShortcutInput.addEventListener("change", updateActivationShortcut);
+  bindShortcutField("#global-search-shortcut", "activationShortcut");
+  bindShortcutField("#global-calculator-shortcut", "calculatorShortcut");
 
   const hideDockIcon = window.storeGet("hideDockIcon") || false;
   const hideDockIconInput = document.querySelector(
@@ -33,13 +29,18 @@ function updateOpenAiAPIKey() {
   window.storeSet("openAiAPIKey", openAiAPIKeyInput.value);
 }
 
-function updateActivationShortcut() {
-  const activationShortcutInput = document.querySelector(
-    "#activation-shortcut"
-  ) as HTMLInputElement;
-  window.storeSet("activationShortcut", activationShortcutInput.value);
+function bindShortcutField(id: string, key: string) {
+  const shortcutInput = document.querySelector(id) as HTMLInputElement;
+  shortcutInput.value = window.storeGet(key) || "";
+  shortcutInput.addEventListener("change", () =>
+    updateShortcut(shortcutInput, key)
+  );
+}
+
+function updateShortcut(el: HTMLInputElement, key: string) {
+  window.storeSet(key, el.value);
   // @ts-ignore (define in dts)
-  electron.ipcRenderer.send("update-activation-shortcut");
+  electron.ipcRenderer.send("update-global-shortcuts");
 }
 
 function updateHideDockIcon() {

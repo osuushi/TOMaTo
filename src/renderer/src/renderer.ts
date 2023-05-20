@@ -4,11 +4,17 @@ import {
   activateSearch,
   activateSettings,
   activateLastView,
+  activateCalculator,
+  currentView,
+  VIEW_ACTIVATORS,
 } from "./nav";
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
 import { endServiceMode, getServiceMode, initMacosService } from "./service";
 import { ServiceInvocationCanceledSentinel } from "../../shared/constants";
+import { getCalcInput, setupCalculator } from "./calculator";
+import { View } from "../../shared/views";
+import { initSettings } from "./settings";
 
 export function init(): void {
   window.addEventListener("DOMContentLoaded", () => {
@@ -21,6 +27,8 @@ function start(): void {
   setupNav();
   setupSearch();
   setupChat();
+  setupCalculator();
+  initSettings();
   initEnforcerLoop();
   initMacosService();
 }
@@ -46,32 +54,46 @@ function bindKeys() {
     if (e.key === "Escape") {
       e.preventDefault();
       e.stopPropagation();
-      // If there's an output, hide it and the screen
-      if (outputScreen) {
-        hideOutput();
-        // If we're in service mode, cancel it now
-        if (getServiceMode()) {
-          endServiceMode(ServiceInvocationCanceledSentinel);
-          searchInput.value = "";
-          renderSearch();
-          // Hide
-          // @ts-ignore (define in dts)
-          electron.ipcRenderer.send("hide");
+
+      switch (currentView()) {
+        case "search":
+          // If there's an output, hide it and the screen
+          if (outputScreen) {
+            hideOutput();
+            // If we're in service mode, cancel it now
+            if (getServiceMode()) {
+              endServiceMode(ServiceInvocationCanceledSentinel);
+              searchInput.value = "";
+              renderSearch();
+              // Hide
+              // @ts-ignore (define in dts)
+              electron.ipcRenderer.send("hide");
+            }
+            return;
+          }
+
+          if (editor) {
+            editor.remove();
+            return;
+          }
+
+          // If there's text in the search input, clear it
+          if (searchInput.value) {
+            searchInput.value = "";
+            searchInput.focus();
+            renderSearch();
+            return;
+          }
+          break;
+        case "calc": {
+          // If there's text in the calculator input, clear it and focus
+          const inputEl = getCalcInput();
+          if (inputEl.value) {
+            inputEl.value = "";
+            inputEl.focus();
+            return;
+          }
         }
-        return;
-      }
-
-      if (editor) {
-        editor.remove();
-        return;
-      }
-
-      // If there's text in the search input, clear it
-      if (searchInput.value) {
-        searchInput.value = "";
-        searchInput.focus();
-        renderSearch();
-        return;
       }
       // @ts-ignore (define in dts)
       electron.ipcRenderer.send("hide");
@@ -125,6 +147,8 @@ function bindKeys() {
     } else if (e.key === "2" && (e.metaKey || e.ctrlKey)) {
       activateChat();
     } else if (e.key === "3" && (e.metaKey || e.ctrlKey)) {
+      activateCalculator();
+    } else if (e.key === "4" && (e.metaKey || e.ctrlKey)) {
       activateSettings();
     }
   });
@@ -133,6 +157,10 @@ function bindKeys() {
 // Listen for activate messages from the background process
 window.electron.ipcRenderer.on("activate", () => {
   activateLastView();
+});
+
+window.electron.ipcRenderer.on("set-view", (_, view: View) => {
+  VIEW_ACTIVATORS[view]();
 });
 
 init();
