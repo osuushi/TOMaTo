@@ -15,6 +15,11 @@ export const schema: Schema<any> = {
     type: "string",
     default: "",
   },
+  calculatorModel: {
+    type: "string",
+    enum: ["gpt-3.5-turbo", "gpt-4"],
+    default: "gpt-3.5-turbo",
+  },
   chitchats: {
     type: "array",
     items: {

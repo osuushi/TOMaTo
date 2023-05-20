@@ -11,10 +11,15 @@ export function renderCalculator() {
 
 let isCalculating = false;
 export function setupCalculator() {
-  const inputEl = getInput();
+  const inputEl = getCalcInput();
+  const modelSwitchEl = document.querySelector(
+    "#calc-model-switch"
+  ) as HTMLInputElement;
+  modelSwitchEl.checked = window.storeGet("calculatorModel") === ModelName.Gpt4;
   inputEl.addEventListener("keydown", (e) => {
     // If enter key is pressed, handle the input
     if (e.key === "Enter") {
+      e.preventDefault();
       if (isCalculating) {
         return;
       }
@@ -22,10 +27,17 @@ export function setupCalculator() {
       calculate();
     }
   });
+
+  modelSwitchEl.addEventListener("change", () => {
+    window.storeSet(
+      "calculatorModel",
+      modelSwitchEl.checked ? ModelName.Gpt4 : ModelName.Gpt35Turbo
+    );
+  });
 }
 
-function getInput() {
-  return document.querySelector("#calc-input") as HTMLInputElement;
+export function getCalcInput() {
+  return document.querySelector("#calc-input") as HTMLTextAreaElement;
 }
 
 function getOutput() {
@@ -33,7 +45,7 @@ function getOutput() {
 }
 
 async function calculate(): Promise<void> {
-  const inputEl = getInput();
+  const inputEl = getCalcInput();
   const outputEl = getOutput();
   const inputValue = inputEl.value;
   const loadingOverlay = document.createElement("div");
@@ -73,7 +85,7 @@ async function generateCode(input: string): Promise<string> {
   `;
 
   const response = await client.createChatCompletion({
-    model: ModelName.Gpt35Turbo,
+    model: window.storeGet("calculatorModel"),
     messages: [
       {
         content: prompt,

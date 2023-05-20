@@ -304,6 +304,7 @@ cycling over the entire window */
 
 #calc {
   display: flex;
+  position: relative;
   flex-direction: column;
   position: relative;
   height: 100%;
@@ -337,4 +338,69 @@ cycling over the entire window */
 #calc-result.error {
   background-color: #ffcccc;
   color: #af0000;
+}
+
+.model-switch-label {
+  height: 80px;
+  width: 40px;
+  border-radius: 40px;
+  background-color: #517743;
+  opacity: 20%;
+  transition: opacity 0.2s ease;
+}
+
+
+.model-switch-label:hover {
+  opacity: 100%;
+}
+
+.model-switch-label::before {
+  content: "GPT-4";
+  text-align: center;
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  width: 150%;
+  left: -25%;
+}
+
+.model-switch-label::after {
+  content: "GPT-3.5";
+  text-align: center;
+  font-size: 12px;
+  position: absolute;
+  bottom: -20px;
+  width: 150%;
+  left: -25%;
+}
+
+.model-switch-label input {
+  position: absolute;
+  height: 0;
+  width: 0;
+  opacity: 0;
+}
+
+
+.model-switch-label .model-switch {
+  position: absolute;
+  top: calc(80px - 36px);
+  left: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #fff;
+  transition: top 0.2s ease;
+}
+
+.model-switch-label input:checked + .model-switch {
+  top: 4px;
+}
+
+
+#calc .model-switch-label {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  cursor: pointer;
 }
