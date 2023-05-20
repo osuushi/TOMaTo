@@ -15,7 +15,12 @@ import { spawnSync, spawn } from "child_process";
 import { runCalculation } from "./calculator";
 import Prism from "prismjs";
 import { writeFile, readFile } from "fs/promises";
-import prismCssPath from "../../build/prism.css.txt?asset";
+import prismCssPath from "../../resources/prism.css.txt?asset&asarUnpack";
+
+// Write the prismCSSPath to /tmp/prismpath.txt
+(async () => {
+  await writeFile("/tmp/prismpath.txt", prismCssPath);
+})();
 
 Store.initRenderer();
 const store = new Store();
