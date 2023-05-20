@@ -7,18 +7,15 @@ export function renderCalculator() {
   if (!document.querySelector(".calc-view.active")) {
     return;
   }
+  getCalcInput().focus();
 }
 
 let isCalculating = false;
 let lastSource = "";
 export function setupCalculator() {
   const inputEl = getCalcInput();
-  const modelSwitchEl = document.querySelector(
-    "#calc-model-switch"
-  ) as HTMLInputElement;
-  const viewSourceEl = document.querySelector(
-    "#calc-source"
-  ) as HTMLButtonElement;
+  const modelSwitchEl = getModelSwitch();
+  const viewSourceEl = getViewSourceButton();
   viewSourceEl.style.display = "none";
   modelSwitchEl.checked = window.storeGet("calculatorModel") === ModelName.Gpt4;
   inputEl.addEventListener("keydown", (e) => {
@@ -45,6 +42,14 @@ export function setupCalculator() {
   });
 }
 
+function getViewSourceButton() {
+  return document.querySelector("#calc-source") as HTMLButtonElement;
+}
+
+function getModelSwitch() {
+  return document.querySelector("#calc-model-switch") as HTMLInputElement;
+}
+
 export function getCalcInput() {
   return document.querySelector("#calc-input") as HTMLTextAreaElement;
 }
@@ -63,10 +68,7 @@ async function calculate(): Promise<void> {
   try {
     let code = await generateCode(inputValue);
     lastSource = code;
-    const sourceButton = document.querySelector(
-      "#calc-source"
-    ) as HTMLButtonElement;
-    sourceButton.style.display = "block";
+    getViewSourceButton().style.display = "block";
     const result = await electron.ipcRenderer.invoke("run-calculation", code);
     outputEl.classList.remove("error");
     outputEl.textContent = result;
