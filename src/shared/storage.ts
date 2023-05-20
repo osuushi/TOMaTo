@@ -7,6 +7,10 @@ export const schema: Schema<any> = {
     type: "string",
     default: "",
   },
+  calculatorShortcut: {
+    type: "string",
+    default: "",
+  },
   hideDockIcon: {
     type: "boolean",
     default: false,

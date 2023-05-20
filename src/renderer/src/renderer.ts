@@ -6,12 +6,15 @@ import {
   activateLastView,
   activateCalculator,
   currentView,
+  VIEW_ACTIVATORS,
 } from "./nav";
 import { initEnforcerLoop, renderSearch, setupSearch } from "./search";
 import { setupChat } from "./chat";
 import { endServiceMode, getServiceMode, initMacosService } from "./service";
 import { ServiceInvocationCanceledSentinel } from "../../shared/constants";
 import { getCalcInput, setupCalculator } from "./calculator";
+import { View } from "../../shared/views";
+import { initSettings } from "./settings";
 
 export function init(): void {
   window.addEventListener("DOMContentLoaded", () => {
@@ -25,6 +28,7 @@ function start(): void {
   setupSearch();
   setupChat();
   setupCalculator();
+  initSettings();
   initEnforcerLoop();
   initMacosService();
 }
@@ -153,6 +157,10 @@ function bindKeys() {
 // Listen for activate messages from the background process
 window.electron.ipcRenderer.on("activate", () => {
   activateLastView();
+});
+
+window.electron.ipcRenderer.on("set-view", (_, view: View) => {
+  VIEW_ACTIVATORS[view]();
 });
 
 init();

@@ -88,10 +88,32 @@ app.whenReady().then(() => {
 
 function updateGlobalShortcuts() {
   globalShortcut.unregisterAll();
-  const shortcut = store.get("activationShortcut") as string | undefined;
-  if (shortcut) {
-    const ret = globalShortcut.register(shortcut, () => {
+  const activationShortcut = store.get("activationShortcut") as
+    | string
+    | undefined;
+  if (activationShortcut) {
+    const ret = globalShortcut.register(activationShortcut, () => {
       // Bring app to front
+      BrowserWindow.getAllWindows()[0].webContents.send(
+        "set-view",
+        View.Search
+      );
+      BrowserWindow.getAllWindows()[0].show();
+    });
+    if (!ret) {
+      console.log("registration failed");
+    }
+  }
+
+  const calculatorShortcut = store.get("calculatorShortcut") as
+    | string
+    | undefined;
+  if (calculatorShortcut) {
+    const ret = globalShortcut.register(calculatorShortcut, () => {
+      BrowserWindow.getAllWindows()[0].webContents.send(
+        "set-view",
+        View.Calculator
+      );
       BrowserWindow.getAllWindows()[0].show();
     });
     if (!ret) {
@@ -110,7 +132,7 @@ function updateGlobalShortcuts() {
   }
 }
 
-ipcMain.on("update-activation-shortcut", () => {
+ipcMain.on("update-global-shortcuts", () => {
   updateGlobalShortcuts();
 });
 

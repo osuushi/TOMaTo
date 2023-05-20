@@ -7,7 +7,7 @@ import { renderCalculator } from "./calculator";
 let lastView = View.Search;
 
 // Mappings of views to activate functions
-const VIEW_ACTIVATORS = {
+export const VIEW_ACTIVATORS = {
   [View.Search]: activateSearch,
   [View.Chat]: activateChat,
   [View.Calculator]: activateCalculator,
@@ -46,7 +46,6 @@ export function activateCalculator() {
 
 export function activateSettings() {
   setActive(View.Settings);
-  initSettings();
 }
 
 export function activateLastView() {
