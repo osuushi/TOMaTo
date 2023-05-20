@@ -310,8 +310,11 @@ cycling over the entire window */
 }
 
 #calc-input {
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+  "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
   box-sizing: border-box;
   font-size: 18px;
+  height: 120px;
   padding: 0 10px;
   width: 100%;
   padding: 10px;
