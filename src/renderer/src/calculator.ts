@@ -93,7 +93,8 @@ async function generateCode(input: string): Promise<string> {
   ${input}
   Your code must be preceded by "%START_CODE%" and followed immediately by "%END_CODE%".
   Do not rely on your memory for calculations, but instead compute things algorithmically whenever possible.
-  Do not use console.log or any libraries.
+  Do not use console.log or any libraries. If the answer to the question involves a unit of measurement, make
+  sure your code will include that unit in the answer.
   Be concise.
   The last statement in your code must evaluate to the final answer.
   Only write the code. Don't comment on it, or explain what it does.
