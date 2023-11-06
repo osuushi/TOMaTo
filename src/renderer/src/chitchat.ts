@@ -55,7 +55,7 @@ async function converse(
   if (model.includes("3.5")) {
     model = "gpt-3.5-turbo-0613";
   } else {
-    model = "gpt-4-0613";
+    model = "gpt-4-1106-preview";
   }
   const transcript: ChatCompletionRequestMessage[] = [];
   for (let i = 0; i < messages.length; i++) {
