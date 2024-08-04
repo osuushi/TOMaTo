@@ -55,12 +55,12 @@ class ChitchatWrapper {
         <div>
           <label for="chitchat-model">Model</label>
           <select id="chitchat-model">
-            <option value="gpt-3.5-turbo" ${
-              model === "gpt-3.5-turbo" ? "selected" : ""
-            }>GPT-3.5 Turbo</option>
-            <option value="gpt-4" ${
-              model === "gpt-4" ? "selected" : ""
-            }>GPT-4</option>
+            <option value="gpt-3.5-turbo" ${model === "gpt-3.5-turbo" ? "selected" : ""
+      }>GPT-3.5 Turbo</option>
+            <option value="gpt-4" ${model === "gpt-4" ? "selected" : ""
+      }>GPT-4</option>
+            <option value="gpt-4o" ${model === "gpt-4o" ? "selected" : ""
+      }>GPT-4o</option>
           </select>
         </div>
         <div class="description-container">

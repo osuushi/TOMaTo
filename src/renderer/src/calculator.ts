@@ -87,21 +87,29 @@ async function calculate(): Promise<void> {
 
 async function generateCode(input: string): Promise<string> {
   const client = getClient();
+  let model = window.storeGet("calculatorModel");
+  if (model.includes("3.5")) {
+    model = "gpt-3.5-turbo-1106";
+  } else if (model.includes("4o")) {
+    model = "gpt-4o";
+  } else {
+    model = "gpt-4";
+  }
   const prompt = dedent`
-  Write a javascript snippet that answers the following question:
+    Write a javascript snippet that answers the following question:
 
-  ${input}
-  Your code must be preceded by "%START_CODE%" and followed immediately by "%END_CODE%".
-  Do not rely on your memory for calculations, but instead compute things algorithmically whenever possible.
-  Do not use console.log or any libraries. If the answer to the question involves a unit of measurement, make
-  sure your code will include that unit in the answer.
-  Be concise.
-  The last statement in your code must evaluate to the final answer.
-  Only write the code. Don't comment on it, or explain what it does.
+    ${input}
+    Your code must be preceded by "%START_CODE%" and followed immediately by "%END_CODE%".
+    Do not rely on your memory for calculations, but instead compute things algorithmically whenever possible.
+    Do not use console.log or any libraries. If the answer to the question involves a unit of measurement, make
+    sure your code will include that unit in the answer.
+    Be concise.
+    The last statement in your code must evaluate to the final answer.
+    Only write the code. Don't comment on it, or explain what it does.
   `;
 
   const response = await client.createChatCompletion({
-    model: window.storeGet("calculatorModel"),
+    model,
     messages: [
       {
         content: prompt,

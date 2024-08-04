@@ -21,7 +21,7 @@ export const schema: Schema<any> = {
   },
   calculatorModel: {
     type: "string",
-    enum: ["gpt-3.5-turbo", "gpt-4"],
+    enum: ["gpt-3.5-turbo", "gpt-4", "gpt-4o"],
     default: "gpt-3.5-turbo",
   },
   chitchats: {
@@ -41,7 +41,7 @@ export const schema: Schema<any> = {
         },
         model: {
           type: "string",
-          enum: ["gpt-3.5-turbo", "gpt-4"],
+          enum: ["gpt-3.5-turbo", "gpt-4", "gpt-4o"],
         },
       },
     },
@@ -52,6 +52,7 @@ export const schema: Schema<any> = {
 export enum ModelName {
   Gpt35Turbo = "gpt-3.5-turbo",
   Gpt4 = "gpt-4",
+  Gpt4o = "gpt-4o",
 }
 
 export interface Chitchat {
